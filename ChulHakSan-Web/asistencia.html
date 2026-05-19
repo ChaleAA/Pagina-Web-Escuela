@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Attendance Log - Chul Hak San</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#fcf9f8",
+              "on-primary-fixed": "#410002",
+              "error": "#ba1a1a",
+              "secondary-fixed": "#ffdeac",
+              "on-tertiary-fixed-variant": "#723600",
+              "on-background": "#1c1b1b",
+              "tertiary-fixed-dim": "#ffb786",
+              "surface-container-highest": "#e5e2e1",
+              "inverse-surface": "#313030",
+              "on-tertiary-fixed": "#311300",
+              "tertiary-container": "#b65b00",
+              "on-tertiary-container": "#fffbfa",
+              "on-surface": "#1c1b1b",
+              "on-secondary-fixed": "#281900",
+              "surface-dim": "#dcd9d9",
+              "on-error-container": "#93000a",
+              "secondary": "#7e5700",
+              "outline": "#926f6b",
+              "inverse-on-surface": "#f3f0ef",
+              "primary-fixed-dim": "#ffb4ab",
+              "surface-tint": "#c00014",
+              "outline-variant": "#e7bdb8",
+              "primary-fixed": "#ffdad6",
+              "primary-container": "#e31e24",
+              "surface-variant": "#e5e2e1",
+              "on-surface-variant": "#5d3f3c",
+              "error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#604100",
+              "on-primary-fixed-variant": "#93000d",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-fixed": "#ffdcc6",
+              "surface-bright": "#fcf9f8",
+              "secondary-container": "#feb300",
+              "on-tertiary": "#ffffff",
+              "surface-container-high": "#eae7e7",
+              "secondary-fixed-dim": "#ffba38",
+              "tertiary": "#914700",
+              "on-primary": "#ffffff",
+              "primary": "#ba0013",
+              "surface-container": "#f0eded",
+              "inverse-primary": "#ffb4ab",
+              "surface-container-low": "#f6f3f2",
+              "on-primary-container": "#fffafa",
+              "on-secondary": "#ffffff",
+              "background": "#fcf9f8",
+              "on-secondary-container": "#6a4800",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-white">
+<!-- TopAppBar -->
+<header class="bg-[#fcf9f8] dark:bg-stone-950 shadow-[0_32px_32px_rgba(0,0,0,0.06)] sticky top-0 z-40 w-full">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="text-[#ba0013] dark:text-[#e31e24] hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors p-2 rounded-full active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-['Manrope'] font-bold text-lg tracking-tight text-on-surface">Attendance Log</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-['Manrope'] font-black text-[#ba0013] dark:text-[#e31e24] tracking-tighter mr-4 hidden md:block">CHUL HAK SAN</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="professional portrait of a martial arts master in a white dobok with a black belt, clean studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA19YEnoOvindiJhCqrzfMotGIEkQqlAZ9vaY1yOZUtHQfpeGCyesuPcnnIng4dPciec3IHICB7EoVSa7QeYxdZz0uBM58HwLgKOXslS1P9BM6nfulSJ97hyhXQStV7270VFaEnqfaHl7lNor1_pSAoE9_7gmwcfZphCFYA2WH__06_853cDQQldpzHauDlQle4Hi74hXjtvjDKsfjj4g1DYj36HE7NTSRBxJ5dhqLEMRb5g2VwYeDkoPIs4MX083BdaGUs7ycKKIE"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 md:px-8 pt-8 pb-32">
+<!-- Summary Dashboard (Asymmetric Bento) -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
+<div class="md:col-span-8 bg-surface-container-low p-8 rounded-xl relative overflow-hidden flex flex-col justify-between min-h-[220px]">
+<div class="relative z-10">
+<p class="font-headline font-extrabold text-5xl md:text-6xl text-on-surface tracking-tighter mb-2">84%</p>
+<p class="font-label text-sm uppercase tracking-widest text-on-surface-variant font-bold">Monthly Average Attendance</p>
+</div>
+<div class="flex items-end justify-between relative z-10">
+<div class="flex gap-1 items-end h-16">
+<div class="w-2 bg-primary-container h-[60%] rounded-t-sm"></div>
+<div class="w-2 bg-primary-container h-[80%] rounded-t-sm"></div>
+<div class="w-2 bg-primary-container h-[40%] rounded-t-sm"></div>
+<div class="w-2 bg-primary-container h-[90%] rounded-t-sm"></div>
+<div class="w-2 bg-primary-container h-[100%] rounded-t-sm"></div>
+<div class="w-2 bg-primary h-[70%] rounded-t-sm"></div>
+</div>
+<span class="text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined">trending_up</span>
+                        +12% vs last month
+                    </span>
+</div>
+<!-- Abstract BG Element -->
+<div class="absolute top-[-20px] right-[-20px] opacity-5">
+<span class="material-symbols-outlined text-[200px]" data-icon="sports_martial_arts">sports_martial_arts</span>
+</div>
+</div>
+<div class="md:col-span-4 grid grid-rows-2 gap-6">
+<div class="bg-surface-container-lowest shadow-[0_32px_32px_rgba(0,0,0,0.06)] p-6 rounded-xl flex items-center justify-between border border-outline-variant/15">
+<div>
+<p class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold mb-1">Active Students</p>
+<p class="font-headline text-3xl font-bold text-on-surface">142</p>
+</div>
+<div class="w-12 h-12 bg-secondary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="groups">groups</span>
+</div>
+</div>
+<div class="bg-primary-container p-6 rounded-xl flex items-center justify-between text-white shadow-xl">
+<div>
+<p class="font-label text-xs uppercase tracking-widest text-white/80 font-bold mb-1">Total Logs (Today)</p>
+<p class="font-headline text-3xl font-bold">28</p>
+</div>
+<div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="fact_check">fact_check</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Attendance Grid (Excel-like but Editorial) -->
+<section class="bg-surface-container-lowest rounded-2xl shadow-[0_32px_32px_rgba(0,0,0,0.06)] overflow-hidden">
+<div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-surface-container-high">
+<div>
+<h2 class="font-headline text-xl font-bold text-on-surface">Student Registry &amp; Records</h2>
+<p class="text-on-surface-variant text-sm">Chul Hak San Dojo - Advanced Class (7:00 PM)</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="bg-surface-container-high px-4 py-2 rounded-lg font-label text-sm font-bold flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filter
+                    </button>
+<button class="bg-primary-container text-white px-4 py-2 rounded-lg font-label text-sm font-bold flex items-center gap-2 hover:brightness-110 transition-all shadow-md">
+<span class="material-symbols-outlined text-sm">add</span> Add Student
+                    </button>
+</div>
+</div>
+<div class="overflow-x-auto hide-scrollbar">
+<table class="w-full text-left border-collapse" id="attendance-table">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="p-6 sticky left-0 bg-surface-container-low z-20 min-w-[280px]">
+<span class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant">Alumno / Graduación</span>
+</th>
+<th class="p-6 min-w-[120px] text-center">
+<span class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant">Legajo</span>
+</th>
+<th class="p-4 min-w-[120px] text-center">
+<span class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant" id="month-header">Cuota [Mes]</span>
+</th>
+<th class="p-4 min-w-[100px] text-center">
+<span class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant">Presente</span>
+</th>
+<th class="p-4 min-w-[100px] text-center hidden md:table-cell">
+<span class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant">Últ. Clase</span>
+</th>
+<th class="p-6 min-w-[120px] text-right">
+<span class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant">Asistencia Total</span>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high" id="student-list-body">
+<!-- Dynamic Content -->
+</tbody>
+</table>
+</div>
+<!-- Pagination / Control Footer -->
+<div class="p-6 bg-surface-container-low flex items-center justify-between border-t border-surface-container-high">
+<p class="text-sm text-on-surface-variant">Showing 1-10 of 142 students</p>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-primary-container text-white shadow-sm font-bold text-xs">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-surface-container-highest transition-colors font-bold text-xs text-on-surface-variant">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-[#fcf9f8]/80 backdrop-blur-xl dark:bg-stone-950/80 border-t border-stone-200/15 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+<div class="flex justify-around items-center h-20 px-4 w-full">
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 py-1 px-4 hover:text-[#ba0013] transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest mt-1">Classes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 py-1 px-4 hover:text-[#ba0013] transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person_search">person_search</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest mt-1">Students</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#e31e24] text-white rounded-xl py-2 px-6 shadow-lg shadow-primary/20 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="how_to_reg" style="font-variation-settings: 'FILL' 1;">how_to_reg</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest mt-1">Mark</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 py-1 px-4 hover:text-[#ba0013] transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest mt-1">Profile</span>
+</a>
+</div>
+</nav>
+<!-- Achievement Chip Floating (Optional High-End UI Element) -->
+<div class="fixed right-6 bottom-24 z-30 hidden lg:block">
+<div class="bg-secondary-container shadow-2xl p-4 rounded-full flex items-center gap-3 border border-white/20 animate-bounce">
+<div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div class="pr-4">
+<p class="font-label text-[10px] font-black uppercase text-on-secondary-container leading-none">Pro Instructor</p>
+<p class="font-headline font-bold text-on-secondary-container">Level 4 Awarded</p>
+</div>
+</div>
+</div>
+    <div id="legajo-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeLegajoModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-3xl shadow-2xl p-8 overflow-hidden">
+            <h2 class="font-headline font-black text-2xl text-on-surface mb-6 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">folder_shared</span>
+                Ficha de Legajo Técnico
+            </h2>
+            
+            <div class="space-y-6">
+                <!-- Documentos -->
+                <div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Documentación Cargada</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div id="modal-medical-doc" class="p-4 bg-gray-50 rounded-2xl border border-gray-100 text-center">
+                            <span class="material-symbols-outlined text-gray-300 text-3xl mb-1">medical_services</span>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase">C. Médico</p>
+                        </div>
+                        <div id="modal-inscription-doc" class="p-4 bg-gray-50 rounded-2xl border border-gray-100 text-center">
+                            <span class="material-symbols-outlined text-gray-300 text-3xl mb-1">assignment</span>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase">Planilla</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuota Federativa -->
+                <div class="p-6 bg-primary/5 rounded-2xl border border-primary/10">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-primary mb-4">Inscripción Federativa Anual</p>
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex-1">
+                            <label class="block text-[8px] font-black text-primary/60 uppercase mb-1">Año de Cobro</label>
+                            <select id="fed-year-select" class="w-full bg-white border-none rounded-xl text-sm font-bold p-3 focus:ring-1 focus:ring-primary shadow-sm">
+                                <option value="2025">ITF 2025</option>
+                                <option value="2026">ITF 2026</option>
+                                <option value="2027">ITF 2027</option>
+                            </select>
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-[8px] font-black text-primary/60 uppercase mb-1">Estado de Pago</label>
+                            <button id="fed-status-toggle" onclick="toggleFedStatus()" class="w-full p-3 rounded-xl font-bold text-sm shadow-sm transition-all"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="closeLegajoModal()" class="w-full mt-8 bg-on-surface text-white py-4 rounded-2xl font-bold hover:bg-stone-800 transition-all active:scale-95">Listo, Cerrar</button>
+        </div>
+    </div>
+
+    <script src="database.js"></script>
+    <script>
+        const activeUser = JSON.parse(localStorage.getItem('active_user'));
+        if (!activeUser || (activeUser.role !== 'instructor' && activeUser.role !== 'admin')) {
+            window.location.replace('login.html');
+        }
+
+        const currentMonth = new Date().toLocaleString('es-ES', { month: 'long' });
+        const monthKey = new Date().getFullYear() + "_" + (new Date().getMonth() + 1);
+        document.getElementById('month-header').textContent = `Cuota [${currentMonth.toUpperCase()}]`;
+
+        let currentModalStudentId = null;
+
+        function loadStudentList() {
+            const tbody = document.getElementById('student-list-body');
+            const allUsers = [...(window.simulatedDatabase || [])];
+            const students = allUsers.filter(u => u.role === 'student');
+            const cuotasDb = JSON.parse(localStorage.getItem('chulhaksan_cuotas_db') || '{}');
+
+            tbody.innerHTML = students.map(student => {
+                const isPaid = cuotasDb[`${student.id}_${monthKey}`] || false;
+                const studentData = JSON.parse(localStorage.getItem('student_data_' + student.id) || '{}');
+                const fullName = studentData.nombres && studentData.apellidos ? `${studentData.apellidos}, ${studentData.nombres}` : student.id;
+                const graduation = studentData.belt || 'Alumno Regular';
+
+                const hasMedical = !!studentData.docMedical;
+                const hasInscription = !!studentData.docInscription;
+                const fedDb = JSON.parse(localStorage.getItem('chulhaksan_federacion_db') || '{}');
+                const currentYear = new Date().getFullYear();
+                const isFedPaid = fedDb[student.id] && fedDb[student.id].year == currentYear && fedDb[student.id].paid;
+
+                return `
+                    <tr class="hover:bg-surface-container-low/50 transition-colors group">
+                        <td class="p-6 sticky left-0 bg-surface-container-lowest group-hover:bg-surface-container-low/50 z-20 transition-colors">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-300">
+                                    <span class="material-symbols-outlined">person</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-on-surface text-sm">${fullName}</p>
+                                    <p class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant">${graduation}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-6 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="openLegajoModal('${student.id}')" class="w-10 h-10 rounded-xl bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all flex items-center justify-center shadow-sm">
+                                    <span class="material-symbols-outlined text-lg">content_paste_search</span>
+                                </button>
+                                <div class="flex flex-col gap-1">
+                                    <span class="w-2 h-2 rounded-full ${hasMedical ? 'bg-emerald-500' : 'bg-red-400'}" title="Certificado Médico"></span>
+                                    <span class="w-2 h-2 rounded-full ${hasInscription ? 'bg-emerald-500' : 'bg-red-400'}" title="Planilla Inscripción"></span>
+                                    <span class="w-2 h-2 rounded-full ${isFedPaid ? 'bg-emerald-500' : 'bg-amber-400'}" title="Cuota Federativa ${currentYear}"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button onclick="toggleCuota('${student.id}', this)" class="w-10 h-10 rounded-xl ${isPaid ? 'bg-green-100 text-green-700' : 'bg-red-50 text-red-400'} flex items-center justify-center mx-auto shadow-sm transition-all active:scale-90">
+                                <span class="material-symbols-outlined text-lg">${isPaid ? 'payments' : 'request_quote'}</span>
+                            </button>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button class="w-8 h-8 rounded border-2 border-surface-container-high text-surface-container-high flex items-center justify-center mx-auto active:scale-90 transition-transform">
+                                <span class="material-symbols-outlined text-lg">check_circle</span>
+                            </button>
+                        </td>
+                        <td class="p-6 text-right">
+                            <span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-[10px] font-bold font-label">N/A</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openLegajoModal(studentId) {
+            currentModalStudentId = studentId;
+            const modal = document.getElementById('legajo-modal');
+            const studentData = JSON.parse(localStorage.getItem('student_data_' + studentId) || '{}');
+            const fedDb = JSON.parse(localStorage.getItem('chulhaksan_federacion_db') || '{}');
+            const fedData = fedDb[studentId] || { year: new Date().getFullYear(), paid: false };
+
+            // Render Doc Boxes
+            renderDocBox('modal-medical-doc', studentData.docMedical, "Apto Físico");
+            renderDocBox('modal-inscription-doc', studentData.docInscription, "Planilla");
+
+            // Federation
+            document.getElementById('fed-year-select').value = fedData.year;
+            updateFedStatusUI(fedData.paid);
+            
+            modal.classList.remove('hidden');
+        }
+
+        function renderDocBox(id, data, label) {
+            const container = document.getElementById(id);
+            if (data) {
+                container.innerHTML = `
+                    <a href="${data}" download="Doc_${label}.png" class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-emerald-500 text-3xl mb-1">download_for_offline</span>
+                        <p class="text-[10px] font-black text-emerald-600 uppercase">Descargar ${label}</p>
+                    </a>
+                `;
+                container.className = "p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center cursor-pointer hover:bg-emerald-100 transition-colors";
+            } else {
+                container.innerHTML = `
+                    <span class="material-symbols-outlined text-gray-300 text-3xl mb-1">block</span>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase">No Disponible</p>
+                `;
+                container.className = "p-4 bg-gray-50 rounded-2xl border border-gray-100 text-center";
+            }
+        }
+
+        function toggleFedStatus() {
+            const yearSelect = document.getElementById('fed-year-select');
+            const fedDb = JSON.parse(localStorage.getItem('chulhaksan_federacion_db') || '{}');
+            const isPaid = !(fedDb[currentModalStudentId]?.paid || false);
+            
+            fedDb[currentModalStudentId] = {
+                year: yearSelect.value,
+                paid: isPaid
+            };
+            
+            localStorage.setItem('chulhaksan_federacion_db', JSON.stringify(fedDb));
+            updateFedStatusUI(isPaid);
+            loadStudentList(); // Refresh badges
+        }
+
+        function updateFedStatusUI(isPaid) {
+            const btn = document.getElementById('fed-status-toggle');
+            if (isPaid) {
+                btn.className = "w-full p-3 rounded-xl font-bold text-sm shadow-sm transition-all bg-emerald-500 text-white";
+                btn.textContent = "PAGA ✅";
+            } else {
+                btn.className = "w-full p-3 rounded-xl font-bold text-sm shadow-sm transition-all bg-red-100 text-red-600";
+                btn.textContent = "PENDIENTE ⏳";
+            }
+        }
+
+        function closeLegajoModal() {
+            document.getElementById('legajo-modal').classList.add('hidden');
+        }
+
+        function toggleCuota(studentId, btn) {
+            const db = JSON.parse(localStorage.getItem('chulhaksan_cuotas_db') || '{}');
+            const key = `${studentId}_${monthKey}`;
+            const newValue = !db[key];
+            db[key] = newValue;
+            localStorage.setItem('chulhaksan_cuotas_db', JSON.stringify(db));
+
+            if (newValue) {
+                btn.className = "w-10 h-10 rounded-xl bg-green-100 text-green-700 flex items-center justify-center mx-auto shadow-sm transition-all active:scale-90";
+                btn.innerHTML = '<span class="material-symbols-outlined text-lg">payments</span>';
+            } else {
+                btn.className = "w-10 h-10 rounded-xl bg-red-50 text-red-400 flex items-center justify-center mx-auto shadow-sm transition-all active:scale-90";
+                btn.innerHTML = '<span class="material-symbols-outlined text-lg">request_quote</span>';
+            }
+        }
+
+        function goBack() {
+             window.location.href = 'instructor.html';
+        }
+
+        loadStudentList();
+    </script>
+    <button onclick="goBack()" class="fixed bottom-24 left-6 z-50 bg-[#ba0013] text-white px-4 py-2 rounded-full shadow-lg font-bold flex items-center gap-2 hover:bg-[#e31e24] transition-colors cursor-pointer">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_back</span>
+        Volver al Panel
+    </button>
+</body></html>

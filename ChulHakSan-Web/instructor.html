@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <script>
+        const activeUser = JSON.parse(localStorage.getItem('active_user'));
+        if (!activeUser || (activeUser.role !== 'instructor' && activeUser.role !== 'admin')) {
+            window.location.replace('login.html');
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Command - Chul Hak San</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary": "#ba0013", "primary-container": "#e31e24", "surface": "#fcf9f8", "on-surface": "#1c1b1b" } } } }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface min-h-screen">
+    <!-- Sidebar Navigation -->
+    <aside
+        class="fixed left-0 top-0 h-full flex flex-col p-4 bg-[#fcf9f8] w-72 border-r border-stone-200 z-50 hidden md:flex">
+        <div class="mb-10 px-4">
+            <span class="font-['Manrope'] font-extrabold text-[#ba0013] text-2xl tracking-tighter">CHUL HAK SAN</span>
+            <p class="text-[10px] text-stone-500 font-bold uppercase tracking-widest mt-1">Instructor Portal</p>
+        </div>
+        <nav class="flex-1 space-y-2">
+            <a href="index.html"
+                class="flex items-center gap-3 px-4 py-3 text-stone-600 hover:text-[#ba0013] hover:bg-stone-100 duration-200">
+                <span class="material-symbols-outlined">home</span>
+                <span class="font-['Inter'] font-medium text-sm">Inicio</span>
+            </a>
+            <a href="student.html"
+                class="flex items-center gap-3 px-4 py-3 text-stone-600 hover:text-[#ba0013] hover:bg-stone-100 duration-200">
+                <span class="material-symbols-outlined">fitness_center</span>
+                <span class="font-['Inter'] font-medium text-sm">Training</span>
+            </a>
+            <a href="admin.html"
+                class="flex items-center gap-3 px-4 py-3 text-stone-600 hover:text-[#ba0013] hover:bg-stone-100 duration-200">
+                <span class="material-symbols-outlined">admin_panel_settings</span>
+                <span class="font-['Inter'] font-medium text-sm">Admin Control</span>
+            </a>
+            <a href="instructor.html"
+                class="flex items-center gap-3 px-4 py-3 bg-[#ba0013] text-white rounded-md shadow-lg duration-200">
+                <span class="material-symbols-outlined">person</span>
+                <span class="font-['Inter'] font-medium text-sm">Instructor Profile</span>
+            </a>
+        </nav>
+        <a href="instructor_profile.html"
+            class="mt-auto p-4 flex items-center gap-4 bg-gray-100 rounded-xl hover:bg-red-50 hover:shadow-md transition-all cursor-pointer group">
+            <img id="instructor-profile-img-sidebar"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs2J4QsCf75hTRQSJCcWRd5vLu7RFzojYBCaTabSyejK_ZhPff0STZvKny3z54DsVB95-bUg1ZdOZtIzjXW1Koa-gAxA43PiCdJQOlawp6Htwt8WHbOvg6UMfHPdBoPwKbjnZUy-EW-TsWCzIvyLVgXCfe5i0p-s0ZIkQdm7G5_LA4MgzaJh04YbBSMpxdZN5LKUe7xb9pK3FEZtQh9ltlpnROmNR1f9_cQFcNyNrxsfOXBIzErKHbjLZt65I-f7TmbUWCzLtdu2A"
+                class="w-10 h-10 rounded-full object-cover">
+            <div>
+                <p id="instructor-profile-name-sidebar"
+                    class="font-bold text-sm leading-none group-hover:text-primary transition-colors">Master Instructor
+                </p>
+                <p id="instructor-profile-belt-sidebar" class="text-xs text-stone-500">IV Dan Black Belt</p>
+            </div>
+        </a>
+    </aside>
+
+    <main class="md:ml-72 min-h-screen pb-24 md:pb-8">
+        <header class="flex items-center justify-between px-6 py-4 w-full bg-[#fcf9f8] shadow-sm sticky top-0 z-40">
+            <h1 class="font-['Manrope'] font-bold text-2xl tracking-tight text-[#ba0013]">Instructor Command</h1>
+            <button onclick="localStorage.removeItem('active_user'); window.location.href='login.html';" title="Logout"
+                class="flex items-center justify-center p-2 rounded-full hover:bg-red-50 text-stone-500 hover:text-primary transition-colors cursor-pointer">
+                <span class="material-symbols-outlined text-xl">logout</span>
+            </button>
+        </header>
+
+        <div class="p-6 space-y-8 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <h2 class="font-headline font-extrabold text-xl tracking-tight flex items-center gap-2 mb-4">
+                        <span class="material-symbols-outlined text-primary">group</span>
+                        Assigned Students
+                    </h2>
+                    <div class="bg-gray-50 p-4 rounded-xl flex items-center justify-between group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20">
+                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb-XV_f5JStWy2Loy0zTr3yrzce1bBKPgb0AZCGgCx1JBclaIPqIyQqWPSZJjJzPu67dgGCpd5MRuAHaHGYQJpEzVKpN_0D42OzvL2PHIAkep9f4ljEt69644zgLU3iNFL2e6dc-_rLvN6jTQxuu2v6Pej3t1orojJfXNG0wh7rTAJ8AL31riNjOnc56GvPWFh9wFRr83yc60WVM-b9mGBx5bbUMawUdI4iPRJv9L9j9MkXXs3_pXJu0gjjW-qQH2BqC-Um6C3_Lk"
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Alejandro Mendez</h3>
+                                <p class="text-[10px] uppercase font-bold text-stone-500">Yellow Belt</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Content Upload Center (Formas / Tules) -->
+                <section class="bg-zinc-800 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col">
+                    <h2 class="font-headline font-extrabold text-xl mb-4 flex justify-between items-center">
+                        Centro de Carga (Formas)
+                        <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-2 py-1 bg-zinc-900 rounded">Beta</span>
+                    </h2>
+                    
+                    <form id="tul-content-form" class="space-y-4">
+                        <div class="grid grid-cols-1 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase text-zinc-500 mb-1">Graduación / Tul</label>
+                                <select id="upload-tul-select" required class="w-full bg-zinc-900 border-none rounded-xl text-xs font-bold py-3 px-4 focus:ring-1 focus:ring-primary text-white">
+                                    <option value="forma-basica">FORMA BASICA</option>
+                                    <option value="chon-ji">CHON JI TUL</option>
+                                    <option value="dan-gun">DAN GUN TUL</option>
+                                    <option value="do-san">DO SAN TUL</option>
+                                    <option value="won-hyo">WON HYO TUL</option>
+                                    <option value="yul-gok">YUL GOK TUL</option>
+                                    <option value="joon-gun">JOON GUN TUL</option>
+                                    <option value="toi-gye">TOI GYE TUL</option>
+                                    <option value="hwa-rang">HWA RANG TUL</option>
+                                    <option value="choong-moo">CHOONG MOO TUL</option>
+                                    <option value="kwang-gae">KWANG GAE TUL</option>
+                                    <option value="po-eun">PO EUN TUL</option>
+                                    <option value="ge-baek">GE BAEK TUL</option>
+                                    <option value="eui-am">EUI AM TUL</option>
+                                    <option value="choong-jang">CHOONG JANG TUL</option>
+                                    <option value="juche">JUCHE TUL</option>
+                                    <option value="sam-il">SAM IL TUL</option>
+                                    <option value="yoo-sin">YOO SIN TUL</option>
+                                    <option value="choi-yong">CHOI YONG TUL</option>
+                                    <option value="yong-gae">YONG GAE TUL</option>
+                                    <option value="ul-ji">UL JI TUL</option>
+                                    <option value="moon-moo">MOON MOO TUL</option>
+                                    <option value="so-san">SO SAN TUL</option>
+                                    <option value="se-jong">SE JONG TUL</option>
+                                    <option value="tong-il">TONG IL TUL</option>
+                                </select>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase text-zinc-500 mb-1">Tipo de Material</label>
+                                    <select id="upload-content-type" class="w-full bg-zinc-900 border-none rounded-xl text-xs font-bold py-3 px-4 focus:ring-1 focus:ring-primary text-white">
+                                        <option value="video">🎥 Video (Youtube)</option>
+                                        <option value="file">📄 Archivo (PDF/Img)</option>
+                                    </select>
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="block text-[10px] font-bold uppercase text-zinc-500 mb-1">Título / Etiqueta</label>
+                                    <input type="text" id="upload-content-title" required placeholder="Ej: Camara Lenta" class="w-full bg-zinc-900 border-none rounded-xl text-xs font-bold py-3 px-4 focus:ring-1 focus:ring-primary text-white">
+                                </div>
+                            </div>
+                            
+                            <div id="video-input-box">
+                                <label class="block text-[10px] font-bold uppercase text-zinc-500 mb-1">Enlace de YouTube</label>
+                                <input type="text" id="upload-video-url" placeholder="https://www.youtube.com/embed/..." class="w-full bg-zinc-900 border-none rounded-xl text-xs font-bold py-3 px-4 focus:ring-1 focus:ring-primary text-white">
+                            </div>
+                            
+                            <div id="file-input-box" class="hidden">
+                                <label class="block text-[10px] font-bold uppercase text-zinc-500 mb-1">Subir Archivo</label>
+                                <input type="file" id="upload-file-data" class="w-full bg-zinc-900 border-none rounded-xl text-xs font-bold p-2 text-zinc-400">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-primary text-white text-xs font-bold rounded-xl py-3 shadow-lg hover:bg-stone-900 transition-all active:scale-95">Añadir Contenidos</button>
+                    </form>
+
+                    <hr class="my-6 border-zinc-700">
+                    
+                    <div class="flex-1 overflow-y-auto max-h-[250px] space-y-2 pr-2 custom-scroll" id="tul-content-list">
+                        <!-- Renderizado por JS -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Event Creation Section -->
+            <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8 mt-6">
+                 <h2 class="font-headline font-extrabold text-xl tracking-tight flex items-center gap-2 mb-4 text-primary">
+                    <span class="material-symbols-outlined">event_available</span>
+                    Programar Nuevo Evento (2026)
+                </h2>
+                <form id="create-event-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Título del Evento</label>
+                            <input type="text" id="event-title" required placeholder="Ej. Examen de Graduación" class="w-full rounded-xl border-gray-200 bg-gray-50 p-4 focus:ring-primary focus:border-primary transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Fecha Exacta</label>
+                            <input type="date" id="event-date" required min="2026-01-01" max="2026-12-31" class="w-full rounded-xl border-gray-200 bg-gray-50 p-4 focus:ring-primary focus:border-primary transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Tipo de Evento</label>
+                            <select id="event-type" required class="w-full rounded-xl border-gray-200 bg-gray-50 p-4 focus:ring-primary focus:border-primary transition-all font-bold text-gray-700">
+                                <option value="examen" selected>🟥 Examen</option>
+                                <option value="torneo">🟧 Torneo</option>
+                                <option value="otro">🟨 Otro Evento</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Detalles / Horarios</label>
+                            <textarea id="event-desc" required placeholder="Detalles, lugar y horarios..." rows="2" class="w-full rounded-xl border-gray-200 bg-gray-50 p-4 focus:ring-primary focus:border-primary transition-all"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 flex justify-between">
+                                Flyer del Evento (Invitación)
+                                <span class="text-[9px] text-gray-400">JPG/PNG < 1MB</span>
+                            </label>
+                            <div class="relative h-[90px] border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 flex flex-col items-center justify-center group hover:border-primary/50 transition-all overflow-hidden">
+                                <input type="file" id="event-flyer" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-10">
+                                <div id="flyer-preview-placeholder" class="flex flex-col items-center">
+                                    <span class="material-symbols-outlined text-gray-400">add_photo_alternate</span>
+                                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Subir Imagen</span>
+                                </div>
+                                <img id="flyer-preview" class="hidden absolute inset-0 w-full h-full object-cover z-0">
+                                <button type="button" id="remove-flyer" class="hidden absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full z-20 flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-xs">close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-primary text-white font-bold rounded-xl p-4 shadow-lg hover:bg-[#93000d] transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">calendar_add_on</span>
+                        Guardar Evento en el Calendario
+                    </button>
+                </form>
+            </section>
+            
+            <!-- Lista de Eventos Creados por el Instructor -->
+            <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8 mt-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    <div>
+                        <h2 class="font-headline font-extrabold text-xl tracking-tight flex items-center gap-2 mb-4">
+                            <span class="material-symbols-outlined text-primary">format_list_bulleted</span>
+                            Mis Eventos Programados
+                        </h2>
+                        <div id="instructor-events-list" class="grid grid-cols-1 gap-4">
+                            <!-- Javascript inyectará los eventos aquí inmediatamente -->
+                        </div>
+                    </div>
+                    
+                    <!-- NOTIFICACIONES / ACTIVIDAD RECIENTE -->
+                    <div class="bg-stone-50 rounded-2xl p-6 border border-stone-200">
+                        <h2 class="font-headline font-extrabold text-lg tracking-tight flex items-center gap-2 mb-4">
+                            <span class="material-symbols-outlined text-orange-500">notifications_active</span>
+                            Actividad Reciente
+                        </h2>
+                        <div id="recent-activity-list" class="space-y-3">
+                            <!-- Inyectado por JS -->
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest text-center py-10">Sin novedades recientes</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BANDEJA DE CONSULTAS (INBOX) -->
+            <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8">
+                <h2 class="font-headline font-extrabold text-xl tracking-tight flex items-center gap-2 mb-6">
+                    <span class="material-symbols-outlined text-primary">forum</span>
+                    Bandeja de Consultas
+                </h2>
+                
+                <div class="flex flex-col md:flex-row gap-6 h-[500px]">
+                    <!-- Lista de Alumnos -->
+                    <div class="w-full md:w-1/3 border border-gray-100 rounded-xl overflow-y-auto bg-gray-50 flex flex-col shadow-inner" id="inbox-students-list">
+                        <!-- Renderizado por JS -->
+                    </div>
+                    
+                    <!-- Panel de Chat -->
+                    <div class="w-full md:w-2/3 border border-gray-200 rounded-xl flex flex-col bg-white overflow-hidden relative shadow-sm">
+                        <!-- Estado Vacío -->
+                        <div id="chat-empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 bg-gray-50 z-10 transition-opacity">
+                            <span class="material-symbols-outlined text-5xl mb-3 opacity-20">forum</span>
+                            <p class="text-xs font-bold uppercase tracking-widest opacity-60">Selecciona un alumno para chatear</p>
+                        </div>
+                        
+                        <!-- Header del Chat -->
+                        <div class="bg-gradient-to-r from-primary to-primary-container px-5 py-3 text-white flex items-center justify-between shadow-md z-0">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center font-bold" id="chat-header-initial">?</div>
+                                <div>
+                                    <h4 class="font-headline font-black text-sm leading-none" id="chat-header-name">Nombre</h4>
+                                    <span class="text-[10px] opacity-80 uppercase tracking-widest font-bold font-body" id="chat-header-dojang">Dojang</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mensajes -->
+                        <div id="instructor-chat-messages" class="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3">
+                            <!-- JS Messages -->
+                        </div>
+                        
+                        <!-- Input -->
+                        <form id="instructor-chat-form" class="p-4 bg-white border-t border-gray-100 flex gap-2">
+                            <input type="hidden" id="current-chat-student-id">
+                            <input type="text" id="instructor-chat-input" disabled
+                                class="flex-1 px-4 py-3 bg-gray-100 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm outline-none transition-all placeholder:text-gray-400 font-medium"
+                                placeholder="Escribe tu respuesta..." autocomplete="off">
+                            <button type="submit" disabled id="instructor-chat-btn"
+                                class="w-12 h-12 bg-primary disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed hover:bg-primary-container text-white rounded-xl shadow-md transition-all flex items-center justify-center active:scale-95 shrink-0">
+                                <span class="material-symbols-outlined" style="font-size: 20px;">send</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Herramientas y Recursos (Nuevos Apartados) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="asistencia.html" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-primary hover:shadow-md transition-all group flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-primary text-3xl">how_to_reg</span>
+                    </div>
+                    <h3 class="font-bold text-lg tracking-tight group-hover:text-primary transition-colors">Asistencia</h3>
+                </a>
+                <a href="calendario_anual.html" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-primary hover:shadow-md transition-all group flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-primary text-3xl">event</span>
+                    </div>
+                    <h3 class="font-bold text-lg tracking-tight group-hover:text-primary transition-colors">Calendario Anual</h3>
+                </a>
+                <a href="catalogo.html" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-primary hover:shadow-md transition-all group flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-primary text-3xl">menu_book</span>
+                    </div>
+                    <h3 class="font-bold text-lg tracking-tight group-hover:text-primary transition-colors">Catálogo</h3>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- BottomNavBar Modificado (Mobile only) -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-[#fcf9f8]/90 backdrop-blur-md flex justify-around items-center px-4 pb-4 pt-2 shadow-2xl">
+        <a href="index.html" class="flex flex-col items-center justify-center text-stone-500 hover:text-[#e31e24]">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px] uppercase font-bold">Inicio</span>
+        </a>
+        <a href="student.html" class="flex flex-col items-center justify-center text-stone-500 hover:text-[#e31e24]">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span class="text-[10px] uppercase font-bold">Train</span>
+        </a>
+        <a href="admin.html" class="flex flex-col items-center justify-center text-stone-500 hover:text-[#e31e24]">
+            <span class="material-symbols-outlined">admin_panel_settings</span>
+            <span class="text-[10px] uppercase font-bold">Admin</span>
+        </a>
+        <a href="instructor.html"
+            class="flex flex-col items-center justify-center text-[#ba0013] bg-red-50 rounded-xl p-2">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-[10px] uppercase font-bold">Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeUser = JSON.parse(localStorage.getItem('active_user'));
+            if (!activeUser) return;
+
+            // Restrict navigation if standard instructor
+            if (activeUser.role === 'instructor') {
+                const linksToRemove = document.querySelectorAll('a[href="student.html"], a[href="admin.html"]');
+                linksToRemove.forEach(link => link.remove());
+
+                // Para seleccionar la clase md:hidden, enviamos 'nav.md\\:hidden' para que QuerySelector lo procese como nav.md\:hidden
+                const nav = document.querySelector('nav.md\\:hidden');
+                if (nav) {
+                    nav.classList.remove('justify-around');
+                    nav.classList.add('justify-center', 'gap-16');
+                }
+            }
+
+            // Load instructor info onto the sidebar card
+            const instructorData = JSON.parse(localStorage.getItem('instructor_data_' + activeUser.id));
+            if (instructorData) {
+                if (instructorData.name || instructorData.lastName) {
+                    document.getElementById('instructor-profile-name-sidebar').textContent = `${instructorData.name || ''} ${instructorData.lastName || ''}`.trim();
+                }
+                if (instructorData.belt) {
+                    document.getElementById('instructor-profile-belt-sidebar').textContent = instructorData.belt;
+                }
+            } else {
+                // If it's a new instructor, just show their id
+                document.getElementById('instructor-profile-name-sidebar').textContent = activeUser.id;
+            }
+
+            const pbKey = 'instructor_pic_' + activeUser.id;
+            const pbData = localStorage.getItem(pbKey);
+            if (pbData) {
+                document.getElementById('instructor-profile-img-sidebar').src = pbData;
+            }
+
+            // Funciones para visualizar los eventos en vivo
+            function renderInstructorEvents() {
+                const listContainer = document.getElementById('instructor-events-list');
+                if(!listContainer) return;
+                const allEvents = JSON.parse(localStorage.getItem('chulhaksan_events_db') || '[]');
+                const myEvents = allEvents.filter(e => e.authorId === activeUser.id);
+                myEvents.sort((a,b) => a.date.localeCompare(b.date));
+
+                if (myEvents.length === 0) {
+                    listContainer.innerHTML = '<div class="col-span-full p-4 text-center text-gray-500 text-sm font-bold bg-gray-50 rounded-xl my-4 border border-dashed border-gray-200">Aún no has programado eventos para la currícula.</div>';
+                    return;
+                }
+
+                const allInscriptions = JSON.parse(localStorage.getItem('chulhaksan_inscriptions_db') || '[]');
+
+                let html = '';
+                myEvents.forEach(e => {
+                    let typeBadge = '';
+                    let borderColor = 'border-gray-400';
+                    let badgeColor = 'bg-gray-200 text-gray-700';
+                    
+                    if (e.type === 'examen') {
+                        borderColor = 'border-[#ba0013]';
+                        badgeColor = 'bg-red-100 text-[#ba0013]';
+                        typeBadge = '🟥 Examen';
+                    } else if (e.type === 'torneo') {
+                        borderColor = 'border-orange-500';
+                        badgeColor = 'bg-orange-100 text-orange-700';
+                        typeBadge = '🟧 Torneo';
+                    } else if (e.type === 'otro') {
+                        borderColor = 'border-yellow-500';
+                        badgeColor = 'bg-yellow-100 text-yellow-800';
+                        typeBadge = '🟨 Otro Evento';
+                    } else {
+                        borderColor = 'border-[#ba0013]';
+                        badgeColor = 'bg-red-100 text-[#ba0013]';
+                        typeBadge = '📌 Evento General';
+                    }
+
+                    // Count inscriptions for this event
+                    const inscriptionCount = allInscriptions.filter(i => i.eventId === e.id).length;
+                    const hasNew = allInscriptions.some(i => i.eventId === e.id && i.isNew);
+
+                    html += `
+                        <div class="bg-gray-50 p-4 rounded-xl border-l-4 ${borderColor} shadow-sm flex flex-col justify-between group transition-all hover:-translate-y-1 relative">
+                            <span class="absolute top-4 right-4 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest ${badgeColor}">${typeBadge}</span>
+                            
+                            ${hasNew ? `<span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>` : ''}
+
+                            <div>
+                                <span class="text-[10px] uppercase font-black tracking-widest text-primary mb-1 block">${e.date}</span>
+                                <h4 class="font-headline font-extrabold text-on-surface mb-2 leading-tight pr-16">${e.title}</h4>
+                                <p class="text-xs font-medium text-gray-600 line-clamp-2 italic mb-4 opacity-80">${e.description}</p>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mt-auto pt-2">
+                                <button onclick="viewInscriptions('${e.id}')" class="text-[11px] bg-white border border-gray-200 px-3 py-1.5 rounded-lg font-bold text-gray-700 hover:border-primary hover:text-primary transition-all flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-xs">group</span>
+                                    ${inscriptionCount} Inscriptos
+                                </button>
+                                <button onclick="deleteEvent('${e.id}')" class="text-xs text-red-500 hover:text-red-700 font-bold flex items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+                                    <span class="material-symbols-outlined text-[14px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                listContainer.innerHTML = html;
+            }
+
+            window.viewInscriptions = function(eventId) {
+                window.location.href = 'gestion_evento.html?eventId=' + eventId;
+            };
+
+            // Exponer función de borrar evento globalmente
+            window.deleteEvent = function(id) {
+                if(!confirm("¿Estás seguro de que deseas eliminar este evento? Esta acción borrará el evento para todos los alumnos.")) return;
+                let allEvents = JSON.parse(localStorage.getItem('chulhaksan_events_db') || '[]');
+                allEvents = allEvents.filter(e => e.id !== id);
+                localStorage.setItem('chulhaksan_events_db', JSON.stringify(allEvents));
+                renderInstructorEvents();
+            };
+
+            // Primera carga al abrir el perfil
+            renderInstructorEvents();
+
+            // Logic for flyer preview
+            const flyerInput = document.getElementById('event-flyer');
+            const flyerPreview = document.getElementById('flyer-preview');
+            const flyerPlaceholder = document.getElementById('flyer-preview-placeholder');
+            const removeFlyerBtn = document.getElementById('remove-flyer');
+            let currentFlyerBase64 = null;
+
+            if(flyerInput) {
+                flyerInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if(!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+                            const max = 800; // Max dimension
+                            if (width > height && width > max) { height *= max / width; width = max; }
+                            else if (height > max) { width *= max / height; height = max; }
+                            canvas.width = width; canvas.height = height;
+                            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                            currentFlyerBase64 = canvas.toDataURL('image/jpeg', 0.7); // Compresión
+                            flyerPreview.src = currentFlyerBase64;
+                            flyerPreview.classList.remove('hidden');
+                            flyerPlaceholder.classList.add('hidden');
+                            removeFlyerBtn.classList.remove('hidden');
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                removeFlyerBtn.addEventListener('click', () => {
+                    currentFlyerBase64 = null;
+                    flyerPreview.classList.add('hidden');
+                    flyerPlaceholder.classList.remove('hidden');
+                    removeFlyerBtn.classList.add('hidden');
+                    flyerInput.value = '';
+                });
+            }
+
+            // Logic for event creation
+            const createEventForm = document.getElementById('create-event-form');
+            if(createEventForm) {
+                createEventForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const title = document.getElementById('event-title').value;
+                    const date = document.getElementById('event-date').value;
+                    const desc = document.getElementById('event-desc').value;
+                    const type = document.getElementById('event-type').value;
+
+                    if(!date.startsWith('2026')) {
+                        alert("Por favor asegúrate de que la fecha sea del año 2026, de acuerdo a la currícula anual dispuesta.");
+                        return;
+                    }
+
+                    const allEvents = JSON.parse(localStorage.getItem('chulhaksan_events_db') || '[]');
+                    const newEvent = {
+                        id: Date.now().toString(),
+                        title: title,
+                        date: date,
+                        description: desc,
+                        type: type,
+                        authorId: activeUser.id,
+                        flyer: currentFlyerBase64 // Nuevo campo para la invitación
+                    };
+                    allEvents.push(newEvent);
+                    localStorage.setItem('chulhaksan_events_db', JSON.stringify(allEvents));
+
+                    alert("Evento '" + title + "' programado exitosamente con su invitación.");
+                    createEventForm.reset();
+                    currentFlyerBase64 = null;
+                    flyerPreview.classList.add('hidden');
+                    flyerPlaceholder.classList.remove('hidden');
+                    removeFlyerBtn.classList.add('hidden');
+                    renderInstructorEvents(); 
+                });
+            }
+
+        // --- LÓGICA DE LA BANDEJA DE CONSULTAS (CHATS) ---
+        function loadInstructorInbox() {
+            const listContainer = document.getElementById('inbox-students-list');
+            if(!listContainer) return;
+            
+            // 1. Encontrar a mis alumnos
+            let myStudents = [];
+            try {
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('student_data_')) {
+                        const studentId = key.replace('student_data_', '');
+                        const data = JSON.parse(localStorage.getItem(key));
+                        if (data && data.instructorId === activeUser.id) {
+                            myStudents.push({
+                                id: studentId,
+                                name: `${data.name || ''} ${data.lastName || ''}`.trim() || studentId,
+                                dojang: data.practicePlace || 'Lugar de práctica'
+                            });
+                        }
+                    }
+                });
+            } catch(e){}
+            
+            // Ordenar alfabéticamente
+            myStudents.sort((a,b) => a.name.localeCompare(b.name));
+            
+            if (myStudents.length === 0) {
+                listContainer.innerHTML = '<div class="p-6 text-center text-gray-500 font-bold italic text-sm m-auto">No tienes alumnos vinculados a tu cuenta aún.</div>';
+                return;
+            }
+            
+            let listHtml = '';
+            myStudents.forEach(s => {
+                // Contar mensajes
+                const messages = JSON.parse(localStorage.getItem('chat_messages_' + s.id) || '[]');
+                const lastMsg = messages.length > 0 ? messages[messages.length-1] : null;
+                const previewText = lastMsg ? (lastMsg.sender === 'student' ? '<span class="text-primary font-bold">A:</span> ' : '<span class="text-gray-400 font-bold">Tú:</span> ') + lastMsg.text : '<em>Sin mensajes</em>';
+                
+                listHtml += `
+                    <button onclick="openChatWithStudent('${s.id}', '${s.name.replace(/'/g, "\\'")}', '${s.dojang.replace(/'/g, "\\'")}')" class="w-full text-left p-4 border-b border-gray-100 hover:bg-white transition-colors flex items-center gap-3 group">
+                        <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center font-black text-primary shrink-0 group-hover:scale-110 transition-transform">
+                            ${s.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div class="flex-1 overflow-hidden">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <h4 class="font-headline font-extrabold text-sm text-on-surface truncate">${s.name}</h4>
+                                <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">${messages.length}</span>
+                            </div>
+                            <p class="text-[11px] text-gray-500 truncate leading-tight">${previewText}</p>
+                        </div>
+                    </button>
+                `;
+            });
+            
+            listContainer.innerHTML = listHtml;
+        }
+        
+        // Manejamos el polling de chat
+        let currentPoll = null;
+
+        window.openChatWithStudent = function(studentId, name, dojang) {
+            // UI changes
+            document.getElementById('chat-empty-state').classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('chat-header-initial').textContent = name.charAt(0).toUpperCase();
+            document.getElementById('chat-header-name').textContent = name;
+            document.getElementById('chat-header-dojang').textContent = dojang;
+            
+            document.getElementById('instructor-chat-input').disabled = false;
+            document.getElementById('instructor-chat-btn').disabled = false;
+            document.getElementById('current-chat-student-id').value = studentId;
+            
+            loadInstructorChatMessages(studentId);
+            
+            // Polling for live updates
+            if(currentPoll) clearInterval(currentPoll);
+            currentPoll = setInterval(() => { loadInstructorChatMessages(studentId, true); }, 2000);
+        };
+        
+        function loadInstructorChatMessages(studentId, noScrollDown = false) {
+            const container = document.getElementById('instructor-chat-messages');
+            const messages = JSON.parse(localStorage.getItem('chat_messages_' + studentId) || '[]');
+            
+            if (messages.length === 0) {
+                container.innerHTML = `<div class="text-center text-xs text-gray-400 my-auto py-10 font-bold uppercase tracking-widest">Inicia la conversación con el alumno</div>`;
+                return;
+            }
+            
+            const currentCount = container.querySelectorAll('.chat-bubble-node').length;
+            if(noScrollDown && currentCount === messages.length) return;
+
+            let html = '';
+            messages.forEach(m => {
+                const isMe = m.sender === 'instructor' || m.sender === 'admin';
+                const wrapperClass = isMe ? 'justify-end' : 'justify-start';
+                const colorClass = isMe ? 'bg-primary text-white rounded-tr-sm' : 'bg-white text-gray-800 rounded-tl-sm border border-gray-100 shadow-sm';
+                const timeClass = isMe ? 'text-white/60' : 'text-gray-400';
+                
+                html += `
+                    <div class="flex ${wrapperClass} w-full chat-bubble-node">
+                        <div class="max-w-[80%] rounded-2xl px-4 py-3 ${colorClass} relative group">
+                            <p class="text-[13px] leading-snug font-medium">${m.text}</p>
+                            <span class="block text-[9px] font-bold ${timeClass} mt-1 text-right uppercase">${m.timestamp}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            
+            if(!noScrollDown) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+        
+        const instructorChatForm = document.getElementById('instructor-chat-form');
+        if(instructorChatForm) {
+            instructorChatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const input = document.getElementById('instructor-chat-input');
+                const studentId = document.getElementById('current-chat-student-id').value;
+                const text = input.value.trim();
+                
+                if (!text || !studentId) return;
+                
+                const messages = JSON.parse(localStorage.getItem('chat_messages_' + studentId) || '[]');
+                const now = new Date();
+                const timestamp = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                messages.push({
+                    sender: 'instructor',
+                    text: text,
+                    timestamp: timestamp
+                });
+                
+                localStorage.setItem('chat_messages_' + studentId, JSON.stringify(messages));
+                input.value = '';
+                loadInstructorChatMessages(studentId);
+                loadInstructorInbox(); // Refresh sidebar logic
+                
+                setTimeout(() => {
+                    const container = document.getElementById('instructor-chat-messages');
+                    container.scrollTop = container.scrollHeight;
+                }, 50);
+            });
+        }
+
+        // Initialize features
+        renderInstructorEvents();
+        loadInstructorInbox();
+        
+        // --- LÓGICA DEL CENTRO DE CARGA (FORMAS / TULES) ---
+        const tulContentForm = document.getElementById('tul-content-form');
+        const tulContentSelect = document.getElementById('upload-tul-select');
+        const contentTypeSelect = document.getElementById('upload-content-type');
+        const videoInputBox = document.getElementById('video-input-box');
+        const fileInputBox = document.getElementById('file-input-box');
+        const videoUrlInput = document.getElementById('upload-video-url');
+        const fileDataInput = document.getElementById('upload-file-data');
+        const contentTitleInput = document.getElementById('upload-content-title');
+        
+        if (contentTypeSelect) {
+            contentTypeSelect.addEventListener('change', () => {
+                if (contentTypeSelect.value === 'video') {
+                    videoInputBox.classList.remove('hidden');
+                    fileInputBox.classList.add('hidden');
+                } else {
+                    videoInputBox.classList.add('hidden');
+                    fileInputBox.classList.remove('hidden');
+                }
+            });
+        }
+
+        if (tulContentSelect) {
+            tulContentSelect.addEventListener('change', () => renderTulContentList(tulContentSelect.value));
+        }
+
+        if (tulContentForm) {
+            tulContentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const tulId = tulContentSelect.value;
+                const type = contentTypeSelect.value;
+                const title = contentTitleInput.value;
+                let url = '';
+
+                if (type === 'video') {
+                    url = videoUrlInput.value.trim();
+                    // Basic YT embed fix
+                    if (url.includes('watch?v=')) {
+                        url = url.replace('watch?v=', 'embed/');
+                    }
+                    if (url.includes('youtu.be/')) {
+                        url = url.replace('youtu.be/', 'www.youtube.com/embed/');
+                    }
+                } else {
+                    const file = fileDataInput.files[0];
+                    if (!file) {
+                        alert("Por favor selecciona un archivo.");
+                        return;
+                    }
+                    url = await fileToBase64(file);
+                }
+
+                if (!url) {
+                    alert("Error al cargar el contenido.");
+                    return;
+                }
+
+                const db = JSON.parse(localStorage.getItem('chulhaksan_tules_content_db') || '{}');
+                if (!db[tulId]) db[tulId] = [];
+                
+                db[tulId].push({
+                    id: Date.now().toString(),
+                    type,
+                    title,
+                    url,
+                    date: new Date().toISOString()
+                });
+
+                localStorage.setItem('chulhaksan_tules_content_db', JSON.stringify(db));
+                tulContentForm.reset();
+                if (type === 'file') {
+                    videoInputBox.classList.remove('hidden');
+                    fileInputBox.classList.add('hidden');
+                }
+                renderTulContentList(tulId);
+                alert("Contenido añadido exitosamente.");
+            });
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        function deleteTulContent(tulId, contentId) {
+            if (!confirm("¿Deseas eliminar este material?")) return;
+            const db = JSON.parse(localStorage.getItem('chulhaksan_tules_content_db') || '{}');
+            if (db[tulId]) {
+                db[tulId] = db[tulId].filter(c => c.id !== contentId);
+                localStorage.setItem('chulhaksan_tules_content_db', JSON.stringify(db));
+                renderTulContentList(tulId);
+            }
+        }
+
+        function renderTulContentList(tulId) {
+            const listContainer = document.getElementById('tul-content-list');
+            if (!listContainer) return;
+            
+            const db = JSON.parse(localStorage.getItem('chulhaksan_tules_content_db') || '{}');
+            const contents = db[tulId] || [];
+
+            if (contents.length === 0) {
+                listContainer.innerHTML = '<p class="text-[10px] text-zinc-600 font-bold uppercase text-center py-4">No hay contenidos cargados para este Tul</p>';
+                return;
+            }
+
+            listContainer.innerHTML = contents.map(c => `
+                <div class="flex items-center justify-between bg-zinc-900/50 p-3 rounded-xl border border-zinc-700/50 group">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-xs ${c.type === 'video' ? 'text-primary' : 'text-zinc-500'}">
+                            ${c.type === 'video' ? 'video_library' : 'description'}
+                        </span>
+                        <div>
+                            <p class="text-[11px] font-bold text-zinc-200">${c.title}</p>
+                            <p class="text-[8px] text-zinc-500 uppercase font-black">${c.type}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteTulContent('${tulId}', '${c.id}')" class="text-zinc-700 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+                        <span class="material-symbols-outlined text-sm">delete</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Initialize lists
+        if (tulContentSelect) renderTulContentList(tulContentSelect.value);
+        renderInstructorEvents();
+
+        });
+    </script>
+</body>
+
+</html>

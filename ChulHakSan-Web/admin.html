@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <script>
+        const activeUser = JSON.parse(localStorage.getItem('active_user'));
+        if (!activeUser || activeUser.role !== 'admin') {
+            window.location.replace('login.html');
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chul Hak San Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary": "#ba0013", "primary-container": "#e31e24", "secondary-container": "#feb300", "background": "#fcf9f8", "surface": "#fcf9f8", "on-surface": "#1c1b1b" } } } }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; min-height: max(884px, 100dvh); }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-24 md:pb-0">
+    <header class="bg-[#fcf9f8] shadow-[0_32px_32px_0_rgba(28,27,27,0.06)] sticky top-0 z-50">
+        <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy3picnMzqwVkU5H0H3FcpItFFrrf0eKhivR9F7KjyqF2FKvafmIDchmikMUxdOrpQriZ91VnVGMLdmRBOVImEWQbtFDGbuxBrEm-QG70iTZcvST5jaVRI9g7VjjEOAUS6A-tns6b1pqUs9DwjCLfr1hQx4HvydblMIouwEm6I6kfKoMFLCu6PL7FInK7V3p9fITFHuXm2sgIN8USdcYv0xmHLj48sS8EzG6XNi2f73Z2C6whcWe6S8e4zTjEbaKFjT7UP-qF73dw" class="w-full h-full object-cover">
+                </div>
+                <span class="text-2xl font-black text-[#ba0013] uppercase tracking-tighter">Chul Hak San</span>
+            </div>
+            <button onclick="localStorage.removeItem('active_user'); window.location.href='login.html';" title="Logout" class="flex items-center justify-center p-2 rounded-full hover:bg-red-50 text-zinc-500 hover:text-primary transition-colors cursor-pointer">
+                <span class="material-symbols-outlined text-xl">logout</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-on-surface">User Registry</h1>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+            <div class="md:col-span-2 p-8 bg-primary rounded-2xl text-white flex flex-col justify-between">
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-widest opacity-80">Total Registered</p>
+                    <h2 class="text-6xl font-black mt-2" id="total-users">--</h2>
+                </div>
+            </div>
+            <div class="p-8 bg-zinc-800 rounded-2xl flex flex-col justify-between text-white">
+                <div>
+                    <p class="text-sm font-semibold uppercase opacity-80 mb-2">Database Backup</p>
+                    <button onclick="exportDatabase()" class="w-full mt-2 py-3 bg-zinc-700 hover:bg-zinc-600 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors">
+                        <span class="material-symbols-outlined">download</span> Export File
+                    </button>
+                    <p class="text-[10px] text-zinc-400 mt-3">* Saves new users back to database.js</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestión Curricular -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8 md:mb-12">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-on-surface">Gestión Curricular (Tules)</h2>
+                    <p class="text-sm text-gray-500 font-medium mt-1">Administra los enlaces de videos y documentos descargables para cada forma.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Selector -->
+                <div class="lg:col-span-1 space-y-4">
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest">Seleccionar Forma</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">expand_more</span>
+                        <select id="admin-tul-select" class="w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface font-body font-bold transition-all appearance-none cursor-pointer">
+                            <option value="forma-basica">Forma Básica</option>
+                            <option value="chon-ji">Chon-Ji Tul</option>
+                            <option value="dan-gun">Dan-Gun Tul</option>
+                            <option value="do-san">Do-San Tul</option>
+                            <option value="won-hyo">Won-Hyo Tul</option>
+                            <option value="yul-gok">Yul-Gok Tul</option>
+                            <option value="joon-gun">Joon-Gun Tul</option>
+                            <option value="toi-gye">Toi-Gye Tul</option>
+                            <option value="hwa-rang">Hwa-Rang Tul</option>
+                            <option value="choong-moo">Choong-Moo Tul</option>
+                            <option value="kwang-gae">Kwang-Gae Tul</option>
+                            <option value="po-eun">Po-Eun Tul</option>
+                            <option value="ge-baek">Ge-Baek Tul</option>
+                            <option value="eui-am">Eui-Am Tul</option>
+                            <option value="choong-jang">Choong-Jang Tul</option>
+                            <option value="juche">Juche Tul</option>
+                            <option value="sam-il">Sam-Il Tul</option>
+                            <option value="yoo-sin">Yoo-Sin Tul</option>
+                            <option value="choi-yong">Choi-Yong Tul</option>
+                            <option value="yong-gae">Yong-Gae Tul</option>
+                            <option value="ul-ji">Ul-Ji Tul</option>
+                            <option value="moon-moo">Moon-Moo Tul</option>
+                            <option value="so-san">So-San Tul</option>
+                            <option value="se-jong">Se-Jong Tul</option>
+                            <option value="tong-il">Tong-Il Tul</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Editor -->
+                <div class="lg:col-span-2 bg-gray-50 p-6 rounded-xl border border-gray-100 flex flex-col space-y-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-primary">edit_document</span>
+                        <h3 class="font-bold text-lg text-gray-800" id="admin-current-tul-title">Forma Básica</h3>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest">URL Video (YouTube Embed)</label>
+                        <input type="text" id="admin-video-url" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#e31e24] text-xs transition-all text-on-surface" placeholder="Ej. https://www.youtube.com/embed/ScMzIvxBSi4">
+                        <p class="text-[10px] text-gray-400">Si dejas este campo vacío, la forma mostrará un mensaje de video bloqueado.</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest">URL Manual PDF</label>
+                        <input type="text" id="admin-pdf-url" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#e31e24] text-xs transition-all text-on-surface" placeholder="Ej. https://misitio.com/manual.pdf">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest">URL Diagrama (Imagen)</label>
+                        <input type="text" id="admin-img-url" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#e31e24] text-xs transition-all text-on-surface" placeholder="Ej. https://misitio.com/diagrama.png">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest">URL Apunte Teórico (TXT/DOC)</label>
+                        <input type="text" id="admin-doc-url" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#e31e24] text-xs transition-all text-on-surface" placeholder="Ej. https://misitio.com/teoria.txt">
+                    </div>
+
+                    <button type="button" id="admin-save-tul-btn" class="mt-4 w-full py-3 bg-primary text-white rounded-xl font-bold uppercase tracking-wider text-sm hover:bg-primary-container transition-colors shadow-md cursor-pointer">
+                        Guardar Contenido Curricular
+                    </button>
+                    <!-- Alert Message -->
+                    <div id="admin-tul-alert" class="hidden mt-4 p-4 rounded-xl text-sm font-bold border flex items-center gap-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual User List -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-24 md:mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold">Usuarios Posibles (Con Acceso)</h2>
+                <span class="text-sm text-gray-400 font-medium">Extraídos de la Base Local</span>
+            </div>
+            <div class="overflow-x-auto h-96 overflow-y-auto border border-gray-100 rounded-xl">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 sticky top-0 z-10 shadow-sm">
+                        <tr>
+                            <th class="p-4 font-bold text-xs text-gray-500 uppercase tracking-widest">Username</th>
+                            <th class="p-4 font-bold text-xs text-gray-500 uppercase tracking-widest">Role</th>
+                            <th class="p-4 font-bold text-xs text-gray-500 uppercase tracking-widest">Password</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-list-body" class="divide-y divide-gray-100 bg-white">
+                        <!-- Carga dinámica por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Update user count dynamically from our Simulated LocalStorage Database
+        const users = JSON.parse(localStorage.getItem('chulhaksan_users_db') || '[]');
+        document.getElementById('total-users').textContent = users.length > 0 ? users.length : "1,284";
+
+        // Render User List
+        const tbody = document.getElementById('user-list-body');
+        if (users.length > 0) {
+            let listHTML = '';
+            users.forEach(u => {
+                let roleColor = u.role === 'admin' ? 'bg-red-100 text-red-700' : 
+                                u.role === 'instructor' ? 'bg-blue-100 text-blue-700' : 
+                                'bg-emerald-100 text-emerald-800';
+
+                listHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="p-4 font-bold text-gray-900">${u.id}</td>
+                        <td class="p-4">
+                            <span class="px-3 py-1 ${roleColor} rounded-full text-[10px] font-bold uppercase tracking-widest">${u.role}</span>
+                        </td>
+                        <td class="p-4 text-gray-500 font-mono text-sm">${u.password}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = listHTML;
+        } else {
+            tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-gray-400 font-medium">No hay usuarios registrados en la base de datos.</td></tr>`;
+        }
+
+        function exportDatabase() {
+            const dbRef = localStorage.getItem('chulhaksan_users_db');
+            if(dbRef) {
+                const jsContent = "window.simulatedDatabase = " + dbRef + ";\n// Updated Database Export";
+                const blob = new Blob([jsContent], {type: "text/javascript"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "database.js";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } else {
+                alert("La base de datos está vacía.");
+            }
+        }
+    </script>
+
+    <!-- BottomNavBar Modificado (Mobile) -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#fcf9f8]/80 backdrop-blur-xl border-t shadow-lg rounded-t-xl">
+        <a href="index.html" class="flex flex-col items-center justify-center text-zinc-400 hover:text-[#e31e24]">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[11px] font-semibold uppercase">Inicio</span>
+        </a>
+        <a href="student.html" class="flex flex-col items-center justify-center text-zinc-400 hover:text-[#e31e24]">
+            <span class="material-symbols-outlined">exercise</span>
+            <span class="text-[11px] font-semibold uppercase">Training</span>
+        </a>
+        <a href="admin.html" class="flex flex-col items-center justify-center text-[#ba0013] scale-110">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+            <span class="text-[11px] font-semibold uppercase">Admin</span>
+        </a>
+        <a href="instructor.html" class="flex flex-col items-center justify-center text-zinc-400 hover:text-[#e31e24]">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-[11px] font-semibold uppercase">Profile</span>
+        </a>
+    </nav>
+
+    <!-- Desktop Sidebar (Modificado para linkear las paginas como atajos rapidos) -->
+    <div class="hidden md:block fixed top-24 left-6 w-64 space-y-4">
+        <div class="p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Quick Links</h3>
+            <div class="space-y-1">
+                <a href="index.html" class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-sm">
+                    <span class="material-symbols-outlined text-primary">home</span> Inicio
+                </a>
+                <a href="student.html" class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-sm">
+                    <span class="material-symbols-outlined text-primary">fitness_center</span> Student Portal
+                </a>
+                <a href="instructor.html" class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-sm">
+                    <span class="material-symbols-outlined text-primary">person</span> Instructor Portal
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Gestión Curricular ---
+            const adminTulSelect = document.getElementById('admin-tul-select');
+            const adminTulTitle = document.getElementById('admin-current-tul-title');
+            const adminVideoUrl = document.getElementById('admin-video-url');
+            const adminPdfUrl = document.getElementById('admin-pdf-url');
+            const adminImgUrl = document.getElementById('admin-img-url');
+            const adminDocUrl = document.getElementById('admin-doc-url');
+            const adminSaveTulBtn = document.getElementById('admin-save-tul-btn');
+            const adminTulAlert = document.getElementById('admin-tul-alert');
+
+            // Initial fetch of the custom DB
+            let adminTulesDB = JSON.parse(localStorage.getItem('admin_tules_db') || '{}');
+
+            function loadTulEditorData(tulId, tulName) {
+                adminTulTitle.textContent = tulName;
+                
+                // Check if we have saved data
+                const data = adminTulesDB[tulId] || {};
+                adminVideoUrl.value = data.videoSrc || '';
+                adminPdfUrl.value = data.pdfUrl || '';
+                adminImgUrl.value = data.imgUrl || '';
+                adminDocUrl.value = data.docUrl || '';
+            }
+
+            adminTulSelect.addEventListener('change', (e) => {
+                const tulId = e.target.value;
+                const tulName = e.target.options[e.target.selectedIndex].text;
+                loadTulEditorData(tulId, tulName);
+            });
+
+            // Load initially
+            loadTulEditorData(adminTulSelect.value, adminTulSelect.options[adminTulSelect.selectedIndex].text);
+
+            adminSaveTulBtn.addEventListener('click', () => {
+                const tulId = adminTulSelect.value;
+                
+                adminTulesDB[tulId] = {
+                    videoSrc: adminVideoUrl.value.trim(),
+                    pdfUrl: adminPdfUrl.value.trim(),
+                    imgUrl: adminImgUrl.value.trim(),
+                    docUrl: adminDocUrl.value.trim()
+                };
+
+                localStorage.setItem('admin_tules_db', JSON.stringify(adminTulesDB));
+
+                // Show success alert
+                adminTulAlert.textContent = "¡Contenido curricular guardado exitosamente!";
+                adminTulAlert.className = "mt-4 p-4 rounded-xl text-sm font-bold border flex items-center gap-2 bg-green-100 text-green-800 border-green-200 transition-all";
+                
+                setTimeout(() => {
+                    adminTulAlert.className = "hidden mt-4 p-4 rounded-xl text-sm font-bold border flex items-center gap-2 opacity-0 transition-all";
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>

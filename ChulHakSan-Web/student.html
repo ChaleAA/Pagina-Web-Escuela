@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+
+<head>
+    <script>
+        if (!localStorage.getItem('active_user')) {
+            window.location.replace('login.html');
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chul Hak San - Student Dashboard</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary": "#ba0013", "primary-container": "#e31e24", "secondary": "#7e5700", "secondary-container": "#feb300", "surface": "#fcf9f8", "on-surface": "#1c1b1b", "background": "#fcf9f8", "surface-container-lowest": "#ffffff" }, fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] } } } }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            background-color: #fcf9f8;
+            color: #1c1b1b;
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="font-body selection:bg-primary-container selection:text-white">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-[#fcf9f8] shadow-[0_32px_32px_rgba(28,27,27,0.06)]">
+        <div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+            <div class="flex items-center gap-4">
+                <a href="student.html" class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq_ONhHtO9kSMChxiw3TMdMh6HcxQ9haSyEGp4CEw-r6F1b2Jt34KgXWpEhtSSpfrz66M5USN29WgFcFZuuMI4vsQqOnNplfCj6uIedxtvx01HHYYyzqkTpg5RehTdvd8hakk5TkF-92VY-98Pbqi4pGDZFidPPh1WHv6u8UDGWICPTYmXn2mCmOWU4d2cOfbqxpB7VfczOJ_0w1ef3zcj7YBv2jJkWF3TcUrKkl8TOv1F57SZS4vAyjL0q5cm_3LQHX8hdhuj350"
+                        alt="Mateo Profile">
+                </a>
+                <h1 class="font-headline font-black text-primary text-xl uppercase italic">Student Hub</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <button
+                    class="material-symbols-outlined p-2 rounded-full hover:bg-zinc-100 text-zinc-500">notifications</button>
+                <button onclick="localStorage.removeItem('active_user'); window.location.href='login.html';"
+                    title="Logout"
+                    class="material-symbols-outlined p-2 rounded-full hover:bg-red-50 text-zinc-500 hover:text-primary transition-colors cursor-pointer">logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Alerta de Cuota Pendiente (Día 15+) -->
+    <div id="cuota-alert-banner" class="fixed top-16 w-full z-40 bg-red-600 text-white py-3 px-6 hidden animate-pulse shadow-lg">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-2xl">warning</span>
+                <p class="text-xs md:text-sm font-bold uppercase tracking-wider">Aviso importante: Regularizar pago de cuota mensual</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.classList.add('hidden')" class="material-symbols-outlined text-sm hover:bg-white/20 rounded-full p-1 transition-colors">close</button>
+        </div>
+    </div>
+
+    <main class="pt-24 pb-32 px-6 max-w-7xl mx-auto space-y-10">
+        <section class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+                <p class="font-label text-sm font-semibold text-secondary uppercase tracking-[0.2em] mb-2">Bienvenido de
+                    nuevo</p>
+                <h2 class="font-headline text-5xl font-extrabold tracking-tight text-on-surface">Bienvenido, <span
+                        id="student-welcome-name" class="capitalize">...</span></h2>
+            </div>
+            <div class="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <div class="w-4 h-4 rounded-full bg-primary animate-pulse"></div>
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Active Belt Status</p>
+                    <p class="font-headline font-extrabold text-primary text-lg">Cinturón Rojo</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Library Grid -->
+        <section>
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="font-headline text-3xl font-extrabold tracking-tight">Biblioteca de Entrenamiento</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[500px]">
+                <div
+                    class="md:col-span-8 group relative rounded-xl overflow-hidden bg-zinc-800 shadow-2xl flex flex-col justify-end p-8">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4GXWCQHd4ZvTsIa_9rt_5E7x1iZyILiRnSFC_HKnzKUKrvBkZRQXVdv7HIwNDXXW7r9qVWFtsrosfJZLutrY4bcS-gSqazBb-NTdECTTi38opZtOxPHOa0sMTnX4SVOMDxQX4nGeOjv2YoDgFf-3CisVLyFxlbRrMFgfpXnnBUOL9U6tSEmrAXZHB5gze_ZWUeStkSF8RNGVXncB98w9MUMEz3QmZB9XW9AF-GIxDEOgNa5jNOSjH7b4xik5pnoIVkm-kZFaeVkQ"
+                        class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700">
+                    <div class="relative z-10">
+                        <a href="tules.html"
+                            class="block text-white font-headline text-5xl font-black mb-6 italic hover:text-primary-container transition-colors">TUL
+                            (PATTERNS)</a>
+                        <a href="tules.html"
+                            class="inline-block bg-primary-container text-white px-8 py-3 rounded-md font-black text-sm uppercase shadow-xl hover:bg-primary transition-all">Explorar
+                            Formas</a>
+                    </div>
+                </div>
+                <div class="md:col-span-4 flex flex-col gap-6">
+                    <div class="flex-1 rounded-xl overflow-hidden bg-secondary-container p-6 relative">
+                        <h4
+                            class="text-yellow-900 font-headline text-2xl font-black italic mb-1 uppercase text-on-secondary-container">
+                            Combate</h4>
+                    </div>
+                    <div class="flex-1 rounded-xl overflow-hidden bg-gray-200 p-6 relative">
+                        <h4 class="font-headline text-2xl font-black italic mb-1 uppercase text-on-surface">Teoría</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Próximos Eventos (Preview Dashboard) -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mt-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-headline font-extrabold text-2xl tracking-tight flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">event_upcoming</span>
+                    Eventos del Dojang
+                </h2>
+                <a href="calendario_anual.html" class="text-xs font-bold w-fit ml-auto px-4 py-2 bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-colors uppercase tracking-widest flex items-center gap-1">Calendario <span class="material-symbols-outlined text-[14px]">open_in_new</span></a>
+            </div>
+            <div id="student-events-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- JS renderiza eventos aquí -->
+            </div>
+        </section>
+        <section
+            class="bg-zinc-800 text-white p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-8 mt-10">
+            <div class="flex items-center gap-6">
+                <div class="w-20 h-20 rounded-xl overflow-hidden shadow-2xl relative group cursor-pointer"
+                    onclick="document.getElementById('profile-upload').click()">
+                    <img id="student-profile-img"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIzDxjC8bgu6f-q1MjfCWPvCM2x7SUTxCDkgun83S-dKJQB8Q7PGJlhq71c8njmGk_7A50u0bxvZak_xYt7Xb1HwoiRF-5eEyob7DCt00jcB7a95Oxy-Co3AAfsxBgpwDZCdlDgNKxYXqHMl9eGOYbDzHKNejIxwEBqaV9OujYxN0ttyT1giyP_vp6HxzlDqClPql6h60vFxPAoD4lJJm5uaxM_bj7koEifzmigvbX4tICZPRpPEN83X68nRDDkTiuVkct6XPXrAg"
+                        class="w-full h-full object-cover group-hover:opacity-60 transition-opacity">
+                    <div
+                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
+                        <span class="material-symbols-outlined text-white">photo_camera</span>
+                    </div>
+                </div>
+                <input type="file" id="profile-upload" accept="image/*" class="hidden">
+                <div>
+                    <h4 id="student-profile-name" class="font-headline text-2xl font-black italic uppercase">...</h4>
+                    <p id="student-profile-id" class="text-white/60 text-sm">ID Alumno: CHS-XXXX</p>
+                </div>
+            </div>
+            <a href="student_profile.html"
+                class="px-10 py-4 bg-white text-black font-black uppercase text-sm rounded-md hover:bg-primary hover:text-white transition-all text-center">Ver
+                Perfil Completo</a>
+        </section>
+    </main>
+
+    <!-- BottomNavBar Modificado -->
+    <nav
+        class="fixed bottom-0 left-0 w-full z-50 bg-[#fcf9f8]/80 backdrop-blur-xl rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <div class="flex justify-around items-center px-4 pb-6 pt-3 max-w-md mx-auto">
+            <a href="index.html"
+                class="flex flex-col items-center justify-center text-zinc-400 hover:text-[#e31e24] transition-all">
+                <span class="material-symbols-outlined">home</span>
+                <span class="font-inter text-[10px] font-semibold uppercase tracking-widest mt-1">Inicio</span>
+            </a>
+            <a href="student.html"
+                class="flex flex-col items-center justify-center text-[#ba0013] scale-110 transition-transform drop-shadow-md">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+                <span class="font-inter text-[10px] font-semibold uppercase tracking-widest mt-1">Train</span>
+            </a>
+            <a href="calendario_anual.html"
+                class="flex flex-col items-center justify-center text-zinc-400 hover:text-[#e31e24] transition-all">
+                <span class="material-symbols-outlined">event</span>
+                <span class="font-inter text-[10px] font-semibold uppercase tracking-widest mt-1">Eventos</span>
+            </a>
+            <a href="student_profile.html"
+                class="flex flex-col items-center justify-center text-zinc-400 hover:text-[#e31e24] transition-all">
+                <span class="material-symbols-outlined">person</span>
+                <span class="font-inter text-[10px] font-semibold uppercase tracking-widest mt-1">Perfil</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Chat Widget (Floating) -->
+    <div id="chat-widget-container" class="fixed bottom-24 right-4 z-50 flex flex-col items-end hidden">
+        <!-- Chat Window -->
+        <div id="chat-window"
+            class="bg-white w-[calc(100vw-2rem)] sm:w-96 rounded-3xl shadow-2xl border border-gray-100 mb-4 overflow-hidden hidden flex-col">
+            <div
+                class="bg-gradient-to-r from-primary to-primary-container px-5 py-4 text-white flex justify-between items-center shadow-md z-1">
+                <div>
+                    <h3 class="font-headline font-black text-lg">Consultas</h3>
+                    <p class="text-[10px] font-medium opacity-80 uppercase tracking-widest">Chat con Instructor</p>
+                </div>
+                <button id="close-chat"
+                    class="material-symbols-outlined hover:bg-white/20 rounded-full p-1 transition-colors">close</button>
+            </div>
+            <div id="chat-messages" class="h-72 overflow-y-auto p-4 bg-gray-50/50 flex flex-col gap-3">
+                <!-- Messages will appear here -->
+            </div>
+            <form id="chat-form" class="flex gap-2 p-3 bg-white border-t border-gray-100">
+                <input type="text" id="chat-input"
+                    class="flex-1 px-4 py-2 bg-gray-100 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm outline-none transition-all placeholder:text-gray-400 font-medium"
+                    placeholder="Escribe un mensaje..." autocomplete="off">
+                <button type="submit"
+                    class="w-10 h-10 bg-primary hover:bg-primary-container text-white rounded-xl shadow-md transition-all flex items-center justify-center active:scale-95 shrink-0">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">send</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Chat Toggle Button -->
+        <button id="chat-toggle"
+            class="w-14 h-14 bg-gradient-to-tr from-primary to-primary-container text-white rounded-full shadow-[0_8px_16px_rgba(186,0,19,0.3)] flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
+            <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">chat</span>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeUser = JSON.parse(localStorage.getItem('active_user'));
+            if (!activeUser) return;
+
+            // Update user names dynamically
+            document.getElementById('student-welcome-name').textContent = activeUser.id;
+            document.getElementById('student-profile-name').textContent = activeUser.id;
+
+            // Update ID Alumno based on Document (DNI)
+            const studentData = JSON.parse(localStorage.getItem('student_data_' + activeUser.id));
+            const idDisplay = document.getElementById('student-profile-id');
+            if (studentData && studentData.dni) {
+                const dniLength = studentData.dni.length;
+                const last4 = dniLength >= 4 ? studentData.dni.slice(-4) : studentData.dni.padStart(4, '0');
+                idDisplay.textContent = 'ID Alumno: CHS-' + last4;
+            } else {
+                idDisplay.textContent = 'ID Alumno: CHS-XXXX';
+            }
+
+            // Handle Profile Image loading and saving
+            const imgElement = document.getElementById('student-profile-img');
+            const uploadInput = document.getElementById('profile-upload');
+            const pfKey = 'profile_pic_' + activeUser.id;
+
+            // Load saved image if exists
+            const savedImg = localStorage.getItem(pfKey);
+            if (savedImg) {
+                imgElement.src = savedImg;
+            }
+
+            // Upload handler
+            uploadInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const base64Str = event.target.result;
+                        imgElement.src = base64Str;
+                        // Save to local storage for this specific user
+                        localStorage.setItem(pfKey, base64Str);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // --- Chat Widget Logic ---
+            if (activeUser.role === 'student' || activeUser.role === 'instructor') {
+                const widgetContainer = document.getElementById('chat-widget-container');
+                const chatToggleBtn = document.getElementById('chat-toggle');
+                const chatWindow = document.getElementById('chat-window');
+                const closeChatBtn = document.getElementById('close-chat');
+                const chatMessagesContainer = document.getElementById('chat-messages');
+                const chatFormElement = document.getElementById('chat-form');
+                const chatInput = document.getElementById('chat-input');
+
+                // For prototype, we use student's ID directly as the room key
+                const chatStorageKey = 'chat_messages_' + activeUser.id;
+
+                // Initially show the widget container (the button)
+                widgetContainer.classList.remove('hidden');
+
+                // Toggle logic
+                let studentPoll = null;
+                chatToggleBtn.addEventListener('click', () => {
+                    chatWindow.classList.toggle('hidden');
+                    chatWindow.classList.toggle('flex');
+                    if (!chatWindow.classList.contains('hidden')) {
+                        loadChat();
+                        chatInput.focus();
+                        studentPoll = setInterval(() => { loadChat(true); }, 2000);
+                    } else {
+                        if(studentPoll) clearInterval(studentPoll);
+                    }
+                });
+
+                closeChatBtn.addEventListener('click', () => {
+                    chatWindow.classList.add('hidden');
+                    chatWindow.classList.remove('flex');
+                    if(studentPoll) clearInterval(studentPoll);
+                });
+
+                function loadChat(noScrollDown = false) {
+                    const messages = JSON.parse(localStorage.getItem(chatStorageKey) || '[]');
+                    const currentCount = chatMessagesContainer.children.length;
+                    
+                    if(noScrollDown && currentCount === messages.length && messages.length > 0) return;
+                    
+                    chatMessagesContainer.innerHTML = '';
+
+                    if (messages.length === 0) {
+                        chatMessagesContainer.innerHTML = '<div class="h-full flex flex-col items-center justify-center opacity-40"><span class="material-symbols-outlined text-4xl mb-2">forum</span><p class="text-center text-xs font-bold uppercase tracking-wider">Sin mensajes</p></div>';
+                    } else {
+                        messages.forEach(msg => {
+                            let isMe = msg.sender === activeUser.role;
+
+                            const alignClass = isMe ? 'self-end bg-primary text-white border-transparent shadow-sm' : 'self-start bg-white text-gray-800 border-gray-200 shadow-sm';
+                            const senderName = isMe ? 'Tú' : (activeUser.role === 'student' ? 'Instructor' : 'Alumno');
+
+                            chatMessagesContainer.innerHTML += `
+                                <div class="max-w-[85%] rounded-2xl p-3 border ${alignClass} flex flex-col gap-1">
+                                    <div class="text-[9px] font-bold uppercase tracking-wider opacity-70 flex justify-between gap-3">
+                                        <span>${senderName}</span>
+                                        <span class="font-normal normal-case">${msg.timestamp}</span>
+                                    </div>
+                                    <div class="text-xs font-medium leading-relaxed">${msg.text}</div>
+                                </div>
+                            `;
+                        });
+                    }
+                    chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+                }
+
+                chatFormElement.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const text = chatInput.value.trim();
+                    if (!text) return;
+
+                    const messages = JSON.parse(localStorage.getItem(chatStorageKey) || '[]');
+                    const now = new Date();
+                    const timestamp = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    messages.push({
+                        sender: activeUser.role,
+                        text: text,
+                        timestamp: timestamp
+                    });
+
+                    localStorage.setItem(chatStorageKey, JSON.stringify(messages));
+                    chatInput.value = '';
+                    loadChat();
+                });
+            }
+
+            // --- Lógica Relacional de Próximos Eventos (Dojang) ---
+            function renderStudentEvents() {
+                const listContainer = document.getElementById('student-events-preview');
+                if(!listContainer) return;
+                
+                let allEvents = JSON.parse(localStorage.getItem('chulhaksan_events_db') || '[]');
+                
+                // Aplicar Filtro Relacional (Misma lógica que calendario.html)
+                const studentData = JSON.parse(localStorage.getItem('student_data_' + activeUser.id));
+                const myInstructorId = studentData && studentData.instructorId ? studentData.instructorId : null;
+                
+                allEvents = allEvents.filter(e => e.authorId === 'admin' || (myInstructorId && e.authorId === myInstructorId));
+                
+                // Ordenar cronológicamente y tomar los primeros 3
+                allEvents.sort((a,b) => a.date.localeCompare(b.date));
+                const upcoming = allEvents.slice(0, 3);
+
+                if (upcoming.length === 0) {
+                    listContainer.innerHTML = '<div class="col-span-full p-4 text-center text-gray-500 text-sm font-bold bg-gray-50 rounded-xl border border-dashed border-gray-200">No hay eventos próximos programados en este momento.</div>';
+                    return;
+                }
+
+                let html = '';
+                upcoming.forEach(e => {
+                    let typeBadge = '';
+                    let borderColor = 'border-gray-400';
+                    let badgeColor = 'bg-gray-200 text-gray-700';
+                    
+                    if (e.type === 'examen') {
+                        borderColor = 'border-[#ba0013]';
+                        badgeColor = 'bg-red-100 text-[#ba0013]';
+                        typeBadge = '🟥 Examen';
+                    } else if (e.type === 'torneo') {
+                        borderColor = 'border-orange-500';
+                        badgeColor = 'bg-orange-100 text-orange-700';
+                        typeBadge = '🟧 Torneo';
+                    } else if (e.type === 'otro') {
+                        borderColor = 'border-yellow-500';
+                        badgeColor = 'bg-yellow-100 text-yellow-800';
+                        typeBadge = '🟨 Otro Evento';
+                    } else {
+                        borderColor = 'border-[#ba0013]';
+                        badgeColor = 'bg-red-100 text-[#ba0013]';
+                        typeBadge = '📌 Evento General';
+                    }
+
+                    html += `
+                        <div class="bg-gray-50 p-4 rounded-xl border-l-4 ${borderColor} shadow-sm flex flex-col justify-between group transition-all hover:-translate-y-1 relative">
+                            <span class="absolute top-4 right-4 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest ${badgeColor}">${typeBadge}</span>
+                            <div>
+                                <span class="text-[10px] uppercase font-black tracking-widest text-gray-500 mb-1 block">${e.date}</span>
+                                <h4 class="font-headline font-extrabold text-on-surface mb-2 leading-tight pr-14">${e.title}</h4>
+                                <p class="text-xs font-medium text-gray-600 line-clamp-2 italic mb-4 opacity-80">${e.description}</p>
+                            </div>
+                            <div class="text-[10px] uppercase font-bold text-gray-400 mt-2">Dojo: ${e.authorId}</div>
+                        </div>
+                    `;
+                });
+                listContainer.innerHTML = html;
+            }
+            
+            renderStudentEvents();
+
+        });
+        // --- LÓGICA DE ALERTA DE CUOTA (DÍA 15) ---
+        const checkCuotaStatus = () => {
+            const today = new Date();
+            const day = today.getDate();
+            const monthKey = today.getFullYear() + "_" + (today.getMonth() + 1);
+            const banner = document.getElementById('cuota-alert-banner');
+            
+            if (day >= 15) {
+                const cuotasDb = JSON.parse(localStorage.getItem('chulhaksan_cuotas_db') || '{}');
+                const isPaid = cuotasDb[`${activeUser.id}_${monthKey}`] || false;
+                
+                if (!isPaid) {
+                    banner.classList.remove('hidden');
+                }
+            }
+        }
+        checkCuotaStatus();
+    </script>
+</body>
+
+</html>

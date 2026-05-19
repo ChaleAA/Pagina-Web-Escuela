@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <script>
+        if (!localStorage.getItem('active_user')) {
+            window.location.replace('login.html');
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chul Hak San - Biblioteca de Formas (Tules)</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary": "#ba0013", "primary-container": "#e31e24", "secondary": "#7e5700", "secondary-container": "#feb300", "surface": "#fcf9f8", "on-surface": "#1c1b1b", "background": "#fcf9f8", "surface-container-lowest": "#ffffff" }, fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] } } } }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { background-color: #fcf9f8; color: #1c1b1b; min-height: max(884px, 100dvh); }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-white pb-32">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-[#fcf9f8] shadow-[0_32px_32px_rgba(28,27,27,0.06)]">
+        <div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+            <div class="flex items-center gap-4">
+                <a href="student.html" class="flex items-center justify-center p-2 rounded-full hover:bg-zinc-100 transition-colors">
+                    <span class="material-symbols-outlined text-xl">arrow_back</span>
+                </a>
+                <h1 class="font-headline font-black text-primary text-xl uppercase italic hidden sm:block">Biblioteca de Tules</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="localStorage.removeItem('active_user'); window.location.href='login.html';" title="Logout" class="material-symbols-outlined p-2 rounded-full hover:bg-red-50 text-zinc-500 hover:text-primary transition-colors cursor-pointer">logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 px-6 max-w-7xl mx-auto space-y-8">
+        <!-- Main Layout: Grid 12 cols. Left side is video/desc (8 cols), Right is downloads (4 cols) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <!-- Left Column: Title, Description, Video -->
+            <div class="lg:col-span-8 flex flex-col space-y-6">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+                        <h2 id="tul-title" class="font-headline text-4xl sm:text-5xl font-black uppercase italic tracking-tight text-on-surface">Chon-Ji Tul</h2>
+                        <span id="tul-belt" class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider self-start sm:self-center">Cinturón Blanco punta Amarilla</span>
+                    </div>
+                    <p id="tul-desc" class="mt-4 text-gray-600 text-[15px] sm:text-base leading-relaxed font-body">
+                        Significa literalmente "Cielo y Tierra". En Oriente, se interpreta como la creación del mundo o el principio de la historia de la humanidad. Es, por lo tanto, el primer Tul que aprende un practicante principiante. Consta de dos partes similares: una representa el cielo y la otra la tierra. Tiene <strong>19 movimientos</strong>.
+                    </p>
+                </div>
+                
+                <!-- Video Container -->
+                <div class="w-full space-y-4" id="video-gallery-container">
+                    <!-- Dinámico: Se inyectan uno o más videos -->
+                    <div class="w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl relative border-4 border-zinc-800 hidden" id="video-template-container">
+                        <iframe id="tul-video" class="w-full h-full relative z-10" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <!-- Locked Overlay Template -->
+                <div id="video-locked-overlay" class="w-full aspect-video bg-zinc-900 rounded-2xl flex flex-col items-center justify-center text-zinc-500 hidden border-4 border-zinc-800 shadow-2xl">
+                    <span class="material-symbols-outlined text-6xl mb-4 opacity-50">lock</span>
+                    <p class="font-headline font-bold text-xl uppercase tracking-widest text-zinc-400">Video Bloqueado</p>
+                    <p class="text-[10px] uppercase font-black tracking-widest mt-2 text-zinc-600">Alcanza el grado necesario para ver este material</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Additional Material / Downloads -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                <!-- Select Tul Dropdown -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="font-label text-xs font-bold mb-3 uppercase tracking-widest text-primary">Navegador de Formas</h3>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">expand_more</span>
+                        <select id="tul-select" class="w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface font-body font-bold transition-all focus:outline-none appearance-none cursor-pointer">
+                            <option value="forma-basica">FORMA BASICA</option>
+                            <option value="chon-ji" selected>Chon Ji Tul (19 M.)</option>
+                            <option value="dan-gun">Dan Gun Tul (21 M.)</option>
+                            <option value="do-san">Do San Tul (24 M.)</option>
+                            <option value="won-hyo">Won Hyo Tul (28 M.)</option>
+                            <option value="yul-gok">Yul Gok Tul (38 M.)</option>
+                            <option value="joon-gun">Joon Gun Tul (32 M.)</option>
+                            <option value="toi-gye">Toi Gye Tul (37 M.)</option>
+                            <option value="hwa-rang">Hwa Rang Tul (29 M.)</option>
+                            <option value="choong-moo">Choong Moo Tul (30 M.)</option>
+                            <option value="kwang-gae">Kwang Gae Tul (39 M.)</option>
+                            <option value="po-eun">Po Eun Tul (36 M.)</option>
+                            <option value="ge-baek">Ge Baek Tul (44 M.)</option>
+                            <option value="eui-am">Eui Am Tul (45 M.)</option>
+                            <option value="choong-jang">Choong Jang Tul (52 M.)</option>
+                            <option value="juche">Juche (45 M.)</option>
+                            <option value="sam-il">Sam Il Tul (33 M.)</option>
+                            <option value="yoo-sin">Yoo Sin Tul (68 M.)</option>
+                            <option value="choi-yong">Choi Yong Tul (46 M.)</option>
+                            <option value="yong-gae">Yong Gae Tul (49 M.)</option>
+                            <option value="ul-ji">Ul Ji Tul (42 M.)</option>
+                            <option value="moon-moo">Moon Moo Tul (61 M.)</option>
+                            <option value="so-san">So San Tul (72 M.)</option>
+                            <option value="se-jong">Se Jong Tul (24 M.)</option>
+                            <option value="tong-il">Tong Il Tul (56 M.)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex-1 flex flex-col">
+                    <h3 class="font-headline text-2xl font-black mb-2 uppercase text-gray-800 italic">Material Secundario</h3>
+                    <p class="text-xs text-gray-500 mb-6 font-medium">Archivos disponibles para descargar complementarios a la forma interactiva actual.</p>
+
+                    <div id="tul-downloads-container" class="flex flex-col gap-3">
+                        <!-- Generado dinámicamente -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 bg-[#fcf9f8]/90 backdrop-blur-xl rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <div class="flex justify-around items-center px-4 pb-6 pt-3 max-w-sm mx-auto">
+            <a href="index.html" class="flex flex-col items-center justify-center text-zinc-400 hover:text-[#e31e24] transition-all">
+                <span class="material-symbols-outlined">home</span>
+                <span class="font-inter text-[10px] font-semibold uppercase tracking-widest mt-1">Inicio</span>
+            </a>
+            <a href="student.html" class="flex flex-col items-center justify-center text-[#ba0013] scale-110 transition-transform">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+                <span class="font-inter text-[10px] font-semibold uppercase tracking-widest mt-1">Alumno</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Lógica de Restricción por Cinturón ---
+            const beltMapping = {
+                "Cinturón Blanco, 10° Gup": 0,
+                "Cinturón Punta Amarilla, 9° Gup": 1,
+                "Cinturón Amarillo, 8° Gup": 2,
+                "Cinturón Punta Verde, 7° Gup": 3,
+                "Cinturón Verde, 6° Gup": 4,
+                "Cinturón Punta Azul, 5° Gup": 5,
+                "Cinturón Azul, 4° Gup": 6,
+                "Cinturón Punta Roja, 3° Gup": 7,
+                "Cinturón Rojo, 2° Gup": 8,
+                "Cinturón Punta Negra, 1° Gup": 9,
+                "Cinturón Negro, 1° Dan": 10,
+                "Cinturón Negro, 2° Dan": 11,
+                "Cinturón Negro, 3° Dan": 12,
+                "Cinturón Negro, 4° Dan": 13,
+                "Cinturón Negro, 5° Dan": 14,
+                "Cinturón Negro, 6° Dan": 15,
+                "Cinturón Negro, 7° Dan": 16,
+                "Cinturón Negro, 8° Dan": 17,
+                "Cinturón Negro, 9° Dan": 18
+            };
+
+            const formRequirements = {
+                "forma-basica": 0,
+                "chon-ji": 1,
+                "dan-gun": 2,
+                "do-san": 3,
+                "won-hyo": 4,
+                "yul-gok": 5,
+                "joon-gun": 6,
+                "toi-gye": 7,
+                "hwa-rang": 8,
+                "choong-moo": 9,
+                "kwang-gae": 10,
+                "po-eun": 10,
+                "ge-baek": 10,
+                "eui-am": 11,
+                "choong-jang": 11,
+                "juche": 11,
+                "sam-il": 12,
+                "yoo-sin": 12,
+                "choi-yong": 12,
+                "yong-gae": 13,
+                "ul-ji": 13,
+                "moon-moo": 13,
+                "so-san": 14,
+                "se-jong": 14,
+                "tong-il": 15
+            };
+
+            const activeUser = JSON.parse(localStorage.getItem('active_user'));
+            let currentBeltIndex = 0; // Default por si el alumno no guardó su nivel aún
+            if (activeUser) {
+                if (activeUser.role === 'instructor' || activeUser.role === 'admin') {
+                    currentBeltIndex = 99; // Total acceso
+                } else {
+                    const studentData = JSON.parse(localStorage.getItem('student_data_' + activeUser.id));
+                    if (studentData && studentData.belt && beltMapping[studentData.belt] !== undefined) {
+                        currentBeltIndex = beltMapping[studentData.belt];
+                    }
+                }
+            }
+
+            // Diccionario de base de datos de Tules
+            // Diccionario de base de datos de Tules completado según el nivel
+            const tulesDatabase = {
+                "forma-basica": { titulo: "Forma Básica", cinturon: "Cinturón Blanco", descripcion: "Esquema preliminar para el aprendizaje de desplazamientos básicos y defensas fundamentales.", videoSrc: "https://www.youtube.com/embed/ScMzIvxBSi4?si=Rj4v4f0-R_g_i7B&rel=0" },
+                "chon-ji": { titulo: "Chon-Ji Tul", cinturon: "Punta Amarilla", descripcion: `Significa literalmente "Cielo y Tierra". El primer Tul que aprende un practicante principiante. Tiene <strong>19 movimientos</strong>.`, videoSrc: "https://www.youtube.com/embed/ScMzIvxBSi4?si=Rj4v4f0-R_g_i7B-&rel=0" },
+                "dan-gun": { titulo: "Dan-Gun Tul", cinturon: "Cinturón Amarillo", descripcion: "Lleva el nombre del Santo Dan-Gun, fundador de Corea en 2333 A.C. Tiene <strong>21 movimientos</strong>.", videoSrc: "" },
+                "do-san": { titulo: "Do-San Tul", cinturon: "Punta Verde", descripcion: "Pseudónimo del patriota Ahn Chang-Ho. Tiene <strong>24 movimientos</strong> representando su vida.", videoSrc: "" },
+                "won-hyo": { titulo: "Won-Hyo Tul", cinturon: "Cinturón Verde", descripcion: "Nombre del monje que introdujo el budismo a la dinastía Silla en el 686 d.C. Tiene <strong>28 movimientos</strong>.", videoSrc: "" },
+                "yul-gok": { titulo: "Yul-Gok Tul", cinturon: "Punta Azul", descripcion: "Pseudónimo del filósofo y erudito Yi I, 'el Confucio de Corea'. Tiene <strong>38 movimientos</strong>.", videoSrc: "" },
+                "joon-gun": { titulo: "Joon-Gun Tul", cinturon: "Cinturón Azul", descripcion: "Lleva el nombre del patriota Ahn Joong-Gun, quien asesinó a Hirobumi Ito. Tiene <strong>32 movimientos</strong>.", videoSrc: "" },
+                "toi-gye": { titulo: "Toi-Gye Tul", cinturon: "Punta Roja", descripcion: "Nombre de pluma del destacado académico Yi Hwang. Tiene <strong>37 movimientos</strong>.", videoSrc: "" },
+                "hwa-rang": { titulo: "Hwa-Rang Tul", cinturon: "Cinturón Rojo", descripcion: "Nombrado en honor al grupo de guerreros jóvenes de la dinastía Silla. Tiene <strong>29 movimientos</strong>.", videoSrc: "" },
+                "choong-moo": { titulo: "Choong-Moo Tul", cinturon: "Punta Negra", descripcion: "Nombre del Almirante Yi Soon-Sin de la dinastía Yi. Tiene <strong>30 movimientos</strong>.", videoSrc: "" },
+                "kwang-gae": { titulo: "Kwang-Gae Tul", cinturon: "1° Dan", descripcion: "Recibe el nombre por Kwang Gae Toh Wang, rey de la dinastía Koguryo. Tiene <strong>39 movimientos</strong>.", videoSrc: "" },
+                "po-eun": { titulo: "Po-Eun Tul", cinturon: "1° Dan", descripcion: "Pseudónimo del leal pionero en el campo de la física Chong Mong Chu. Tiene <strong>36 movimientos</strong>.", videoSrc: "" },
+                "ge-baek": { titulo: "Ge-Baek Tul", cinturon: "1° Dan", descripcion: "Recibe el nombre del general Ge-Baek de la dinastía Baek Je. Tiene <strong>44 movimientos</strong>.", videoSrc: "" },
+                "eui-am": { titulo: "Eui-Am Tul", cinturon: "2° Dan", descripcion: "El pseudónimo de Son Byong Hi, líder del movimiento independentista. Tiene <strong>45 movimientos</strong>.", videoSrc: "" },
+                "choong-jang": { titulo: "Choong-Jang Tul", cinturon: "2° Dan", descripcion: "El seudónimo dado al general Kim Duk Ryang. Tiene <strong>52 movimientos</strong>.", videoSrc: "" },
+                "juche": { titulo: "Juche Tul", cinturon: "2° Dan", descripcion: "Representa la idea filosófica de Juche. Tiene <strong>45 movimientos</strong>.", videoSrc: "" },
+                "sam-il": { titulo: "Sam-Il Tul", cinturon: "3° Dan", descripcion: "Denota la fecha histórica del movimiento independista. Tiene <strong>33 movimientos</strong>.", videoSrc: "" },
+                "yoo-sin": { titulo: "Yoo-Sin Tul", cinturon: "3° Dan", descripcion: "Por el General Kim Yoo Sin, Comandante que unificó los tres reinos. Tiene <strong>68 movimientos</strong>.", videoSrc: "" },
+                "choi-yong": { titulo: "Choi-Yong Tul", cinturon: "3° Dan", descripcion: "Nombrado en honor del general Choi Yong, comandante a final de la dinastía Koryo. Tiene <strong>46 movimientos</strong>.", videoSrc: "" },
+                "yong-gae": { titulo: "Yong-Gae Tul", cinturon: "4° Dan", descripcion: "Por el famoso general Yon Gae Somoon de Koguryo. Tiene <strong>49 movimientos</strong>.", videoSrc: "" },
+                "ul-ji": { titulo: "Ul-Ji Tul", cinturon: "4° Dan", descripcion: "Nombre del general Ul-Ji Moon Dok, quien defendió a Korea. Tiene <strong>42 movimientos</strong>.", videoSrc: "" },
+                "moon-moo": { titulo: "Moon-Moo Tul", cinturon: "4° Dan", descripcion: "Honra al treinta Rey de la Dinastía Silla. Tiene <strong>61 movimientos</strong>.", videoSrc: "" },
+                "so-san": { titulo: "So-San Tul", cinturon: "5° Dan", pseudonym: true, descripcion: "Seudónimo del gran monje Choi Hyong Ung (1520-1604). Tiene <strong>72 movimientos</strong>.", videoSrc: "" },
+                "se-jong": { titulo: "Se-Jong Tul", cinturon: "5° Dan", descripcion: "Llamado así por el rey Se Jong, inventor del alfabeto coreano Han-Gul. Tiene <strong>24 movimientos</strong>.", videoSrc: "" },
+                "tong-il": { titulo: "Tong-Il Tul", cinturon: "6° Dan", descripcion: "Denota la resolución a la unificación de Corea. Tiene <strong>56 movimientos</strong>.", videoSrc: "" }
+            };
+
+            // Sincronizar Base de Datos Local con la del Administrador
+            const adminTulesDB = JSON.parse(localStorage.getItem('admin_tules_db') || '{}');
+            for (let tId in adminTulesDB) {
+                if (tulesDatabase[tId]) {
+                    const adminData = adminTulesDB[tId];
+                    if (adminData.videoSrc) tulesDatabase[tId].videoSrc = adminData.videoSrc;
+                    if (adminData.pdfUrl) tulesDatabase[tId].pdfUrl = adminData.pdfUrl;
+                    if (adminData.imgUrl) tulesDatabase[tId].imgUrl = adminData.imgUrl;
+                    if (adminData.docUrl) tulesDatabase[tId].docUrl = adminData.docUrl;
+            const selector = document.getElementById('tul-select');
+            const tituloUI = document.getElementById('tul-title');
+            const cinturonUI = document.getElementById('tul-belt');
+            const descUI = document.getElementById('tul-desc');
+            const videoGallery = document.getElementById('video-gallery-container');
+            const overlayUI = document.getElementById('video-locked-overlay');
+
+            const loadTul = (idTul, optionText) => {
+                const requiredBelt = formRequirements[idTul] || 0;
+                const downloadsUI = document.getElementById('tul-downloads-container');
+                
+                videoGallery.innerHTML = '';
+                downloadsUI.innerHTML = '';
+
+                if (currentBeltIndex >= requiredBelt) {
+                    overlayUI.classList.add('hidden');
+                    cinturonUI.classList.remove('bg-zinc-100', 'text-zinc-600');
+                    cinturonUI.classList.add('bg-primary/10', 'text-primary');
+
+                    let staticData = tulesDatabase[idTul];
+                    tituloUI.textContent = staticData ? staticData.titulo : optionText;
+                    cinturonUI.textContent = staticData ? staticData.cinturon : "Graduación";
+                    descUI.innerHTML = staticData ? staticData.descripcion : "Descripción técnica en desarrollo.";
+
+                    const db = JSON.parse(localStorage.getItem('chulhaksan_tules_content_db') || '{}');
+                    const dynamicContents = db[idTul] || [];
+
+                    const videos = dynamicContents.filter(c => c.type === 'video');
+                    if (videos.length > 0) {
+                        videos.forEach(v => {
+                            videoGallery.innerHTML += `
+                                <div class="w-full space-y-2">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-zinc-400 flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-sm">play_circle</span> ${v.title}
+                                    </p>
+                                    <div class="w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl relative border-4 border-zinc-800">
+                                        <iframe class="w-full h-full relative z-10" src="${v.url}" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    } else if (staticData && staticData.videoSrc) {
+                        videoGallery.innerHTML += `
+                            <div class="w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl relative border-4 border-zinc-800">
+                                <iframe class="w-full h-full relative z-10" src="${staticData.videoSrc}" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        `;
+                    } else {
+                        videoGallery.innerHTML = `<div class="p-12 bg-zinc-100 rounded-2xl border-2 border-dashed border-zinc-200 text-center"><p class="text-zinc-400 font-bold text-sm uppercase">No hay videos disponibles</p></div>`;
+                    }
+
+                    const files = dynamicContents.filter(c => c.type === 'file');
+                    let hasFiles = false;
+
+                    if (files.length > 0) {
+                        hasFiles = true;
+                        files.forEach(f => {
+                            downloadsUI.innerHTML += `
+                                <a href="${f.url}" download="${f.title}" class="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-white hover:shadow-md transition-all border border-gray-100 group cursor-pointer block">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                            <span class="material-symbols-outlined">description</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-sm text-gray-800">${f.title}</h4>
+                                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Documento / Imagen</p>
+                                        </div>
+                                    </div>
+                                    <span class="material-symbols-outlined text-gray-300 group-hover:text-emerald-600 transition-colors">download</span>
+                                </a>
+                            `;
+                        });
+                    }
+
+                    if (staticData && staticData.pdfUrl) {
+                        hasFiles = true;
+                        downloadsUI.innerHTML += `<a href="${staticData.pdfUrl}" target="_blank" class="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-white hover:shadow-md transition-all border border-gray-100 group cursor-pointer block"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-red-100 text-red-600 rounded-lg flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors"><span class="material-symbols-outlined">picture_as_pdf</span></div><div><h4 class="font-bold text-sm text-gray-800">Manual Oficial</h4><p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">PDF</p></div></div><span class="material-symbols-outlined text-gray-300 group-hover:text-primary transition-colors">download</span></a>`;
+                    }
+
+                    if (!hasFiles) {
+                        downloadsUI.innerHTML = `<div class="p-4 bg-gray-50 border border-gray-100 rounded-xl text-center"><p class="text-xs text-gray-500 font-medium italic">No hay material descargable disponible.</p></div>`;
+                    }
+                } else {
+                    overlayUI.classList.remove('hidden');
+                    tituloUI.textContent = "Contenido Bloqueado";
+                    cinturonUI.classList.remove('bg-primary/10', 'text-primary');
+                    cinturonUI.classList.add('bg-zinc-100', 'text-zinc-600');
+                    cinturonUI.textContent = "Acceso Restringido por Nivel";
+                    descUI.innerHTML = `<div class="bg-red-50 p-6 rounded-xl border border-red-200 shadow-sm mt-4 text-[#ba0013]"><div class="flex items-center gap-3 mb-2"><span class="material-symbols-outlined text-3xl">lock</span><h4 class="font-bold text-lg">Nivel Insuficiente</h4></div><p class="text-sm font-medium">Sigue entrenando para desbloquear el material de <strong>${optionText}</strong>.</p></div>`;
+                }
+            };
+
+            selector.addEventListener('change', (e) => {
+                const idTul = e.target.value;
+                const optionText = e.target.options[e.target.selectedIndex].text;
+                loadTul(idTul, optionText);
+            });
+
+            // Disparar carga inicial para bloquear si aplican reglas a Chon-Ji que está default
+            const initialId = selector.value;
+            const initialText = selector.options[selector.selectedIndex].text;
+            loadTul(initialId, initialText);
+        });
+    </script>
+</body>
+</html>

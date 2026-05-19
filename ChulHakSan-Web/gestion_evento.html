@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Gestión de Evento - Chul Hak San</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#ba0013",
+                        "primary-container": "#e31e24",
+                        surface: "#fcf9f8",
+                        "on-surface": "#1c1b1b",
+                    },
+                    fontFamily: {
+                        headline: ["Manrope", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fcf9f8; color: #1c1b1b; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-12">
+
+    <!-- Header Navigation -->
+    <header class="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+        <div class="flex items-center gap-4">
+            <button onclick="window.location.href='instructor.html'" class="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-all">
+                <span class="material-symbols-outlined text-gray-500">arrow_back</span>
+            </button>
+            <div>
+                <h1 id="event-title-main" class="font-headline font-extrabold text-xl text-primary leading-none">Gestión de Evento</h1>
+                <p id="event-date-sub" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Cargando...</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <span id="event-count-badge" class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">0 Inscriptos</span>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] mx-auto p-6 space-y-6">
+        
+        <!-- Summary Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Inscriptos</p>
+                <h3 id="stat-total" class="text-3xl font-headline font-black text-on-surface">0</h3>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 text-green-600">Pagos Recibidos</p>
+                <h3 id="stat-payments" class="text-3xl font-headline font-black text-green-600">0</h3>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 text-blue-600">Planillas Entreg.</p>
+                <h3 id="stat-forms" class="text-3xl font-headline font-black text-blue-600">0</h3>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Masculinos</p>
+                <h3 id="stat-m" class="text-3xl font-headline font-black text-on-surface">0</h3>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Femeninos</p>
+                <h3 id="stat-f" class="text-3xl font-headline font-black text-on-surface">0</h3>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between group">
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Tipo</p>
+                    <span id="stat-type" class="text-xs font-bold text-gray-700">General</span>
+                </div>
+                <div id="stat-icon" class="w-10 h-10 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-sm">event</span>
+                </div>
+            </div>
+            <div id="flyer-stat-card" class="hidden bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between hover:border-primary transition-all cursor-pointer" onclick="viewFlyer()">
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Invitación</p>
+                    <span class="text-xs font-bold text-primary flex items-center gap-1">
+                        <span class="material-symbols-outlined text-xs">image</span> Ver Flyer
+                    </span>
+                </div>
+                <div class="w-10 h-10 rounded-lg overflow-hidden border border-gray-100">
+                    <img id="stat-flyer-thumb" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row items-center gap-4">
+            <div class="relative w-full md:w-96">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-lg">search</span>
+                <input type="text" id="search-input" oninput="filterTable()" placeholder="Buscar por apellido, nombre o DNI..." 
+                    class="w-full pl-10 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm outline-none transition-all placeholder:text-gray-400 font-medium">
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <select id="filter-belt" onchange="filterTable()" class="bg-gray-50 border-none rounded-xl px-4 py-3 text-sm font-bold text-gray-600 focus:ring-2 focus:ring-primary/20 transition-all">
+                    <option value="">Todas las Graduaciones</option>
+                    <!-- Injected by JS -->
+                </select>
+                <button onclick="exportToCSV()" class="ml-auto px-6 py-3 bg-stone-800 text-white font-bold rounded-xl text-sm hover:bg-stone-900 transition-all flex items-center gap-2 active:scale-95">
+                    <span class="material-symbols-outlined text-sm">download</span> Exportar Lista
+                </button>
+            </div>
+        </div>
+
+        <!-- table Section -->
+        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table id="main-table" class="w-full text-left border-collapse whitespace-nowrap">
+                    <thead>
+                        <tr class="bg-gray-50 text-[11px] uppercase tracking-widest text-gray-400 font-black border-b border-gray-100">
+                            <th class="py-4 px-6">Alumno / DNI</th>
+                            <th class="py-4 px-2">Graduación</th>
+                            <th class="py-4 px-2 text-center">Pago</th>
+                            <th class="py-4 px-2 text-center">Planilla</th>
+                            <th class="py-4 px-2">Edad / Sexo</th>
+                            <th class="py-4 px-2">Peso / Altura</th>
+                            <th class="py-4 px-2">Instructor / Lugar</th>
+                            <th class="py-4 px-2">ITF / ID</th>
+                            <th class="py-4 px-6 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inscriptions-table-body" class="text-sm divide-y divide-gray-50">
+                        <!-- Renderizado por JS -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden py-32 text-center flex flex-col items-center">
+                <span class="material-symbols-outlined text-7xl text-gray-100 mb-4">person_search</span>
+                <h3 class="font-headline font-bold text-xl text-gray-400 uppercase tracking-tighter">No se encontraron inscritos</h3>
+                <p class="text-sm text-gray-300">Aclara tu búsqueda o verifica si hay alumnos anotados.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const activeUser = JSON.parse(localStorage.getItem('active_user'));
+        if (!activeUser || (activeUser.role !== 'instructor' && activeUser.role !== 'admin')) {
+            window.location.replace('login.html');
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('eventId');
+        
+        let allInscriptions = [];
+        let event = null;
+
+        function loadData() {
+            const allEvents = JSON.parse(localStorage.getItem('chulhaksan_events_db') || '[]');
+            event = allEvents.find(e => e.id === eventId);
+            
+            if(!event) {
+                alert("Evento no encontrado");
+                window.location.href = 'instructor.html';
+                return;
+            }
+
+            document.getElementById('event-title-main').textContent = event.title;
+            document.getElementById('event-date-sub').textContent = `${event.date} | Event ID: ${event.id}`;
+            document.getElementById('stat-type').textContent = event.type.toUpperCase();
+            
+            const iconBox = document.getElementById('stat-icon');
+            if(event.type === 'examen') iconBox.className = 'w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-[#ba0013]';
+            else if(event.type === 'torneo') iconBox.className = 'w-10 h-10 rounded-full flex items-center justify-center bg-orange-100 text-orange-600';
+            else iconBox.className = 'w-10 h-10 rounded-full flex items-center justify-center bg-yellow-100 text-yellow-700';
+
+            // Show flyer thumb if exists
+            if(event.flyer) {
+                document.getElementById('flyer-stat-card').classList.remove('hidden');
+                document.getElementById('stat-flyer-thumb').src = event.flyer;
+            }
+
+            const masterInscriptions = JSON.parse(localStorage.getItem('chulhaksan_inscriptions_db') || '[]');
+            allInscriptions = masterInscriptions.filter(i => i.eventId === eventId);
+            
+            // Mark as seen
+            let updated = false;
+            masterInscriptions.forEach(i => {
+                if(i.eventId === eventId && i.isNew) {
+                    i.isNew = false;
+                    updated = true;
+                }
+            });
+            if(updated) localStorage.setItem('chulhaksan_inscriptions_db', JSON.stringify(masterInscriptions));
+
+            renderStatistics();
+            renderTable(allInscriptions);
+            populateFilters();
+        }
+
+        function renderStatistics() {
+            document.getElementById('event-count-badge').textContent = `${allInscriptions.length} Inscriptos`;
+            document.getElementById('stat-total').textContent = allInscriptions.length;
+            
+            const males = allInscriptions.filter(i => i.formInfo.sexo === 'Masculino').length;
+            const females = allInscriptions.filter(i => i.formInfo.sexo === 'Femenino').length;
+            const paid = allInscriptions.filter(i => i.paymentReceived).length;
+            const forms = allInscriptions.filter(i => i.formReceived).length;
+            
+            document.getElementById('stat-m').textContent = males;
+            document.getElementById('stat-f').textContent = females;
+            document.getElementById('stat-payments').textContent = `${paid}/${allInscriptions.length}`;
+            document.getElementById('stat-forms').textContent = `${forms}/${allInscriptions.length}`;
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('inscriptions-table-body');
+            const empty = document.getElementById('empty-state');
+            tbody.innerHTML = '';
+            
+            if(data.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            data.forEach(ins => {
+                const info = ins.formInfo;
+                const isPaid = ins.paymentReceived || false;
+                const isFormDone = ins.formReceived || false;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors group ${isPaid && isFormDone ? 'bg-green-50/30' : ''}">
+                        <td class="py-4 px-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-black text-gray-400 group-hover:bg-primary group-hover:text-white transition-all">${info.apellidos[0]}</div>
+                                <div>
+                                    <p class="font-bold text-gray-900">${info.apellidos.toUpperCase()}, ${info.nombres}</p>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">${info.dni}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-2 text-center">
+                             <span class="bg-zinc-800 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">${info.graduacionActual}</span>
+                        </td>
+                        <td class="py-4 px-2 text-center">
+                            <input type="checkbox" ${isPaid ? 'checked' : ''} onchange="toggleInscriptionStatus('${ins.studentId}', 'paymentReceived', this.checked)" 
+                                class="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer transition-all">
+                        </td>
+                        <td class="py-4 px-2 text-center">
+                            <input type="checkbox" ${isFormDone ? 'checked' : ''} onchange="toggleInscriptionStatus('${ins.studentId}', 'formReceived', this.checked)" 
+                                class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer transition-all">
+                        </td>
+                        <td class="py-4 px-2">
+                             <p class="font-bold text-gray-700">${info.edad} años</p>
+                             <p class="text-[10px] text-gray-400 uppercase font-black tracking-tighter">${info.sexo}</p>
+                        </td>
+                        <td class="py-4 px-2">
+                             <p class="font-bold text-gray-700">${info.peso} kg</p>
+                             <p class="text-[10px] text-gray-400 uppercase font-black">${info.altura} cm</p>
+                        </td>
+                        <td class="py-4 px-2">
+                             <p class="font-bold text-primary truncate max-w-[150px]">${info.lugarPractica}</p>
+                             <p class="text-[10px] text-gray-400 font-medium">${info.instructorDirecto || 'No especif.'}</p>
+                        </td>
+                        <td class="py-4 px-2">
+                             <p class="text-xs font-mono font-bold text-blue-600 uppercase">${info.tituloITF || 'S/N'}</p>
+                             <p class="text-[9px] text-gray-400">ID: ${info.idTKD || '-'}</p>
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            <button onclick="viewFullProfile('${ins.studentId}')" title="Ver Perfil" class="p-2 text-gray-300 hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-xl">account_circle</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function toggleInscriptionStatus(studentId, field, value) {
+            const masterInscriptions = JSON.parse(localStorage.getItem('chulhaksan_inscriptions_db') || '[]');
+            const index = masterInscriptions.findIndex(i => i.eventId === eventId && i.studentId === studentId);
+            
+            if(index !== -1) {
+                masterInscriptions[index][field] = value;
+                localStorage.setItem('chulhaksan_inscriptions_db', JSON.stringify(masterInscriptions));
+                
+                // Actualizar cache local y UI
+                allInscriptions = masterInscriptions.filter(i => i.eventId === eventId);
+                renderStatistics();
+                // Opcional: no re-renderizar tabla completa para no perder el scroll, pero sí refrescar la clase de la fila
+                filterTable(); 
+            }
+        }
+
+        function populateFilters() {
+            const beltSelect = document.getElementById('filter-belt');
+            const belts = [...new Set(allInscriptions.map(i => i.formInfo.graduacionActual))];
+            belts.forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b;
+                opt.textContent = b;
+                beltSelect.appendChild(opt);
+            });
+        }
+
+        function filterTable() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const belt = document.getElementById('filter-belt').value;
+            
+            const filtered = allInscriptions.filter(i => {
+                const matchQuery = i.formInfo.apellidos.toLowerCase().includes(query) || 
+                                   i.formInfo.nombres.toLowerCase().includes(query) || 
+                                   i.formInfo.dni.includes(query);
+                const matchBelt = belt === "" || i.formInfo.graduacionActual === belt;
+                return matchQuery && matchBelt;
+            });
+            
+            renderTable(filtered);
+        }
+
+        function exportToCSV() {
+            if(allInscriptions.length === 0) return;
+            
+            // CSV Logic for all 23 fields
+            const headers = ["Apellido", "Nombre", "DNI", "F.Nac", "Edad", "Sexo", "Peso", "Altura", "Graduacion", "ITF", "ID", "Instructor", "Lugar"];
+            const csvRows = [headers.join(",")];
+            
+            allInscriptions.forEach(ins => {
+                const i = ins.formInfo;
+                const row = [i.apellidos, i.nombres, i.dni, i.fechaNacimiento, i.edad, i.sexo, i.peso, i.altura, i.graduacionActual, i.tituloITF, i.idTKD, i.instructorDirecto, i.lugarPractica];
+                csvRows.push(row.join(","));
+            });
+            
+            const csvContent = "data:text/csv;charset=utf-8," + csvRows.join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `inscripciones_${event.title.replace(/\s+/g, '_')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function viewFlyer() {
+            if(event && event.flyer) {
+                const win = window.open();
+                win.document.write(`<img src="${event.flyer}" style="max-width:100%">`);
+            }
+        }
+
+        loadData();
+    </script>
+</body>
+</html>

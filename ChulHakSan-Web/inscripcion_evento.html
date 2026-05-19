@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Inscripción a Evento - Chul Hak San</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#ba0013",
+                        "primary-container": "#e31e24",
+                        surface: "#fcf9f8",
+                        "on-surface": "#1c1b1b",
+                    },
+                    fontFamily: {
+                        headline: ["Manrope", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fcf9f8; color: #1c1b1b; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col items-center justify-center p-6">
+
+    <!-- Loading State -->
+    <div id="loading-state" class="w-full max-w-lg text-center p-10 hidden">
+        <span class="material-symbols-outlined animate-spin text-5xl text-primary mb-4">settings</span>
+        <h2 class="font-headline font-bold text-xl">Cargando evento...</h2>
+    </div>
+
+    <!-- Main Container -->
+    <main id="form-container" class="w-full max-w-2xl bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 flex flex-col">
+        <!-- Event Header Banner -->
+        <div id="event-banner" class="bg-gradient-to-r from-primary to-[#93000d] p-8 text-white relative">
+            <button onclick="window.history.back()" class="absolute top-4 left-4 bg-white/20 hover:bg-white/40 active:scale-95 transition-all w-10 h-10 rounded-full flex items-center justify-center">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <span id="event-type-badge" class="mt-8 inline-block px-3 py-1 bg-white/20 text-white rounded-full text-[10px] font-bold uppercase tracking-widest mb-3 backdrop-blur-sm">📌 Categ. Evento</span>
+            <h1 id="event-title" class="font-headline font-extrabold text-3xl md:text-4xl leading-tight mb-2">Cargando...</h1>
+            <p id="event-date" class="text-white/80 font-medium text-sm flex items-center gap-1 opacity-90"><span class="material-symbols-outlined text-[16px]">calendar_today</span> Fecha del evento</p>
+        </div>
+
+        <!-- Inscription Form Container -->
+        <div class="p-8">
+            <h2 class="font-headline font-bold text-xl mb-1 text-gray-800">Formulario de Inscripción</h2>
+            <p class="text-sm text-gray-500 mb-8">Completa los siguientes campos requeridos por tu instructor para confirmar tu asistencia oficial.</p>
+            
+            <form id="inscription-form" class="space-y-6">
+                <!-- CONTENEDOR DE CAMPOS (Esperando variables del usuario) -->
+                <!-- DATOS PERSONALES -->
+                <div>
+                    <h3 class="font-headline font-bold text-lg border-b border-gray-200 pb-2 mb-4 text-primary">Datos Personales</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Apellidos</label><input type="text" id="ins-apellidos" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Nombres</label><input type="text" id="ins-nombres" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Fecha de Nacimiento</label><input type="date" id="ins-fecha-nac" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-600"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Edad</label><input type="number" id="ins-edad" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Ocupación</label><input type="text" id="ins-ocupacion" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">D.N.I.</label><input type="text" id="ins-dni" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Sexo</label>
+                            <select id="ins-sexo" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-600">
+                                <option value="">Seleccionar</option><option value="Masculino">Masculino</option><option value="Femenino">Femenino</option><option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Nacionalidad</label><input type="text" id="ins-nacionalidad" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                    </div>
+                </div>
+
+                <!-- DATOS FÍSICOS Y CONTACTO -->
+                <div>
+                    <h3 class="font-headline font-bold text-lg border-b border-gray-200 pb-2 mb-4 text-primary mt-6">Físico y Contacto</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Peso (Kg)</label><input type="number" step="0.1" id="ins-peso" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Altura (cm)</label><input type="number" id="ins-altura" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Teléfono</label><input type="tel" id="ins-telefono" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div class="md:col-span-2"><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Domicilio</label><input type="text" id="ins-domicilio" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Localidad</label><input type="text" id="ins-localidad" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Código Postal</label><input type="text" id="ins-cp" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                    </div>
+                </div>
+
+                <!-- DATOS MARCIALES -->
+                <div>
+                    <h3 class="font-headline font-bold text-lg border-b border-gray-200 pb-2 mb-4 text-primary mt-6">Datos de Práctica (Taekwon-Do)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Graduación Actual</label><input type="text" id="ins-graduacion" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Título ITF N°</label><input type="text" id="ins-itf" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Identificación (ID)</label><input type="text" id="ins-id-tkd" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Fecha Examen Anterior</label><input type="date" id="ins-fecha-ant" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-600"></div>
+                        <div class="md:col-span-2"><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Lugar de Práctica</label><input type="text" id="ins-lugar" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Instructor Directo</label><input type="text" id="ins-inst-directo" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Instructor a Cargo</label><input type="text" id="ins-inst-cargo" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                        <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Instructor Mayor</label><input type="text" id="ins-inst-mayor" class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all"></div>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-gray-100">
+                    <button type="submit" class="w-full bg-primary text-white font-bold text-lg rounded-xl py-4 shadow-lg hover:bg-[#93000d] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">how_to_reg</span>
+                        Inscribirme Ahora
+                    </button>
+                    <p class="text-center text-[10px] text-gray-400 mt-4 font-bold uppercase tracking-widest">Al inscribirte aceptas presentarte en tiempo y forma</p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // 1. Initial Logic
+        const activeUser = JSON.parse(localStorage.getItem('active_user'));
+        if (!activeUser || activeUser.role !== 'student') {
+            window.location.replace('login.html');
+        }
+
+        // 2. Fetch Param
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('eventId');
+        
+        const allEvents = JSON.parse(localStorage.getItem('chulhaksan_events_db') || '[]');
+        const targetEvent = allEvents.find(e => e.id === eventId);
+
+        // 3. UI Hydration for Event
+        if (targetEvent) {
+            document.getElementById('event-title').textContent = targetEvent.title;
+            document.getElementById('event-date').innerHTML = `<span class="material-symbols-outlined text-[16px]">calendar_today</span> ${targetEvent.date}`;
+            
+            const badge = document.getElementById('event-type-badge');
+            const banner = document.getElementById('event-banner');
+            if(targetEvent.type === 'examen') {
+                badge.textContent = '🟥 Examen Oficial';
+            } else if(targetEvent.type === 'torneo') {
+                badge.textContent = '🟧 Torneo Competitivo';
+                banner.className = 'bg-gradient-to-r from-orange-500 to-orange-700 p-8 text-white relative';
+            } else if(targetEvent.type === 'otro') {
+                badge.textContent = '🟨 Evento Especial';
+                banner.className = 'bg-gradient-to-r from-yellow-500 to-yellow-600 p-8 text-white relative';
+                document.getElementById('event-title').classList.add('text-yellow-950');
+                document.getElementById('event-date').classList.replace('text-white/80', 'text-yellow-900');
+                badge.classList.replace('text-white', 'text-yellow-900');
+                badge.classList.replace('bg-white/20', 'bg-black/10');
+            } else {
+                badge.textContent = '📌 Clase General';
+            }
+        } else {
+            document.getElementById('event-title').textContent = "Evento no encontrado";
+        }
+
+        // 4. Autocompletar con Datos del Alumno
+        const studentData = JSON.parse(localStorage.getItem('student_data_' + activeUser.id) || '{}');
+        if (studentData) {
+            // Parse name (Assuming format "Nombres Apellidos" or similar. Profile has name/surname usually but my previous UI saved full name or separate depending on iterations)
+            // Let's map if exact match exists, else leave empty for user
+            document.getElementById('ins-nombres').value = studentData.firstName || '';
+            document.getElementById('ins-apellidos').value = studentData.lastName || '';
+            
+            // Si están fusionados en un solo `name`
+            if(!studentData.firstName && !studentData.lastName && studentData.name) {
+                const parts = studentData.name.split(' ');
+                document.getElementById('ins-nombres').value = parts[0] || '';
+                document.getElementById('ins-apellidos').value = parts.slice(1).join(' ') || '';
+            }
+
+            document.getElementById('ins-fecha-nac').value = studentData.dob || '';
+            if(studentData.dob) {
+                const dob = new Date(studentData.dob);
+                const diff_ms = Date.now() - dob.getTime();
+                const age_dt = new Date(diff_ms); 
+                document.getElementById('ins-edad').value = Math.abs(age_dt.getUTCFullYear() - 1970);
+            }
+
+            document.getElementById('ins-dni').value = studentData.dni || '';
+            document.getElementById('ins-sexo').value = studentData.gender || '';
+            document.getElementById('ins-nacionalidad').value = studentData.nationality || 'Argentina'; // Default
+            
+            document.getElementById('ins-peso').value = studentData.weight || '';
+            document.getElementById('ins-altura').value = studentData.height || '';
+            
+            document.getElementById('ins-telefono').value = studentData.phone || '';
+            document.getElementById('ins-domicilio').value = studentData.address || '';
+            document.getElementById('ins-localidad').value = studentData.city || '';
+            
+            document.getElementById('ins-graduacion').value = studentData.belt || '';
+            document.getElementById('ins-lugar').value = studentData.dojang || '';
+            
+            // Ocupación, CP, ITF, Instructor Directo, etc no estaban en el perfil original,
+            // pero si existiesen, se mapean igual (los dejamos en blanco por defecto si no están).
+        }
+        
+        // 5. Form Submission Logic
+        document.getElementById('inscription-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if(!targetEvent) {
+                alert("No hay un evento válido asigando a este formulario.");
+                return;
+            }
+
+            const inscriptionData = {
+                eventId: targetEvent.id,
+                studentId: activeUser.id,
+                dateSubmitted: new Date().toISOString(),
+                isNew: true, // For instructor notification
+                formInfo: {
+                    apellidos: document.getElementById('ins-apellidos').value,
+                    nombres: document.getElementById('ins-nombres').value,
+                    fechaNacimiento: document.getElementById('ins-fecha-nac').value,
+                    edad: document.getElementById('ins-edad').value,
+                    ocupacion: document.getElementById('ins-ocupacion').value,
+                    dni: document.getElementById('ins-dni').value,
+                    sexo: document.getElementById('ins-sexo').value,
+                    nacionalidad: document.getElementById('ins-nacionalidad').value,
+                    peso: document.getElementById('ins-peso').value,
+                    altura: document.getElementById('ins-altura').value,
+                    telefono: document.getElementById('ins-telefono').value,
+                    domicilio: document.getElementById('ins-domicilio').value,
+                    localidad: document.getElementById('ins-localidad').value,
+                    codigoPostal: document.getElementById('ins-cp').value,
+                    graduacionActual: document.getElementById('ins-graduacion').value,
+                    tituloITF: document.getElementById('ins-itf').value,
+                    idTKD: document.getElementById('ins-id-tkd').value,
+                    fechaExamenAnterior: document.getElementById('ins-fecha-ant').value,
+                    lugarPractica: document.getElementById('ins-lugar').value,
+                    instructorDirecto: document.getElementById('ins-inst-directo').value,
+                    instructorCargo: document.getElementById('ins-inst-cargo').value,
+                    instructorMayor: document.getElementById('ins-inst-mayor').value,
+                    fechaExamen: targetEvent.date // Defaulted from event
+                }
+            };
+
+            let allInscriptions = JSON.parse(localStorage.getItem('chulhaksan_inscriptions_db') || '[]');
+            
+            // Check if already inscribed
+            const alreadyExists = allInscriptions.find(i => i.eventId === targetEvent.id && i.studentId === activeUser.id);
+            if(alreadyExists) {
+                alert("Ya registramos tu inscripción a este evento. Si realizaste cambios en el formulario, se han actualizado los datos.");
+                allInscriptions = allInscriptions.map(i => i.eventId === targetEvent.id && i.studentId === activeUser.id ? inscriptionData : i);
+            } else {
+                allInscriptions.push(inscriptionData);
+                alert("¡Inscripción confirmada! Tus datos han sido enviados a tu instructor.");
+            }
+
+            localStorage.setItem('chulhaksan_inscriptions_db', JSON.stringify(allInscriptions));
+            window.location.href = 'calendario.html';
+        });
+    </script>
+</body>
+</html>

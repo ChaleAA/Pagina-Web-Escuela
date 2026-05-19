@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ba0013",
+              "surface-tint": "#c00014",
+              "surface-container-high": "#eae7e7",
+              "secondary-fixed": "#ffdeac",
+              "surface-dim": "#dcd9d9",
+              "on-primary-fixed-variant": "#93000d",
+              "on-tertiary": "#ffffff",
+              "surface-container-low": "#f6f3f2",
+              "surface-container-highest": "#e5e2e1",
+              "error": "#ba1a1a",
+              "secondary-container": "#feb300",
+              "background": "#fcf9f8",
+              "inverse-primary": "#ffb4ab",
+              "on-surface-variant": "#5d3f3c",
+              "surface-variant": "#e5e2e1",
+              "on-secondary-container": "#6a4800",
+              "on-secondary-fixed": "#281900",
+              "error-container": "#ffdad6",
+              "on-background": "#1c1b1b",
+              "outline-variant": "#e7bdb8",
+              "primary-container": "#e31e24",
+              "on-secondary-fixed-variant": "#604100",
+              "tertiary-fixed-dim": "#ffb786",
+              "on-primary-container": "#fffafa",
+              "tertiary-fixed": "#ffdcc6",
+              "tertiary-container": "#b65b00",
+              "secondary": "#7e5700",
+              "inverse-surface": "#313030",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#ffba38",
+              "primary-fixed": "#ffdad6",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#ffb4ab",
+              "on-surface": "#1c1b1b",
+              "on-tertiary-fixed": "#311300",
+              "on-secondary": "#ffffff",
+              "surface-bright": "#fcf9f8",
+              "inverse-on-surface": "#f3f0ef",
+              "surface": "#fcf9f8",
+              "on-error-container": "#93000a",
+              "on-primary-fixed": "#410002",
+              "on-primary": "#ffffff",
+              "tertiary": "#914700",
+              "on-tertiary-container": "#fffbfa",
+              "surface-container": "#f0eded",
+              "outline": "#926f6b",
+              "on-tertiary-fixed-variant": "#723600"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-[#fcf9f8] dark:bg-gray-900 shadow-[0_32px_32px_0_rgba(28,27,27,0.06)] sticky top-0 z-50 flex justify-between items-center px-6 py-4 w-full border-none bg-surface-container-low">
+<div class="flex items-center gap-4">
+<button class="text-gray-500 active:scale-95 duration-150 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="text-[#ba0013] dark:text-[#e31e24] font-black uppercase italic tracking-tighter text-lg">CHUL HAK SAN STORE</h1>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-[#ba0013] font-bold font-['Manrope'] text-lg tracking-tight active:scale-95 duration-150 transition-opacity" href="#">Inicio</a>
+<a class="text-gray-500 font-['Manrope'] text-lg tracking-tight active:scale-95 duration-150 hover:opacity-80 transition-opacity" href="#">Tienda</a>
+<a class="text-gray-500 font-['Manrope'] text-lg tracking-tight active:scale-95 duration-150 hover:opacity-80 transition-opacity" href="#">Carrito</a>
+<a class="text-gray-500 font-['Manrope'] text-lg tracking-tight active:scale-95 duration-150 hover:opacity-80 transition-opacity" href="#">Perfil</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-gray-500 active:scale-95 duration-150 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="text-[#ba0013] active:scale-95 duration-150 hover:opacity-80 transition-opacity relative">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold px-1 rounded-full">3</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 pt-8">
+<!-- Editorial Hero Section -->
+<section class="relative grid grid-cols-1 md:grid-cols-12 gap-8 mb-16 items-center">
+<div class="md:col-span-7 z-10">
+<span class="bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">Nueva Colección 2024</span>
+<h2 class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6 leading-none">EQUIPAMIENTO DE <span class="text-primary">ALTO NIVEL</span></h2>
+<p class="text-lg text-on-surface-variant max-w-lg mb-8 font-body">Diseñados para la precisión del Taekwon-Do ITF. Disciplina, calidad y potencia en cada costura.</p>
+<div class="flex gap-4">
+<button class="bg-gradient-to-r from-primary to-primary-container text-white px-8 py-4 rounded-md font-bold text-sm uppercase tracking-widest shadow-lg hover:brightness-110 transition-all active:scale-95">Ver Catálogo</button>
+<button class="bg-surface-container-high text-on-surface px-8 py-4 rounded-md font-bold text-sm uppercase tracking-widest hover:bg-surface-dim transition-all active:scale-95">Guía de talles</button>
+</div>
+</div>
+<div class="md:col-span-5 relative">
+<div class="aspect-[4/5] overflow-hidden rounded-xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+<img alt="Dobok de Taekwondo" class="w-full h-full object-cover" data-alt="Close up of a premium white Taekwondo Dobok with black collar and detailed embroidery on a clean minimalist background with studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAatlOdCf04v5fmvXWukv9kh0bYkSftEtbloZsPNC_GSIII_XdiQ2LFaTPHhxg2CmeESegjPdYQmnBD9sDy09qTAdHm_M4lct-2fJRjg15Ro0PQiJf9O_QKaG4ZQoIq-3Q173LPO-4ZIGqDmP2ncvxfRcNLFm5SgItNg3zz-Kb7nyq05PJvq3crPLyEB5vVv4OBv2oIIbU_u3xcvzYcaDpldMp9Bs7Q381CgrHIqHtdEsVbi4oxj7iwhCZj8HomL83kbgQuuhfn-L8"/>
+</div>
+<!-- Asymmetric Floating Card -->
+<div class="absolute -bottom-6 -left-12 bg-surface-container-lowest p-6 rounded-xl shadow-xl hidden lg:block border border-outline-variant/15 max-w-[200px]">
+<p class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-1">Certificación Oficial</p>
+<p class="text-sm font-bold text-on-surface">Aprobado por la ITF para competición internacional.</p>
+</div>
+</div>
+</section>
+<!-- Category Filters -->
+<div class="flex flex-wrap items-center justify-between gap-6 mb-12 py-6 border-y border-outline-variant/10">
+<div class="flex overflow-x-auto pb-2 md:pb-0 gap-3 scrollbar-hide no-scrollbar">
+<button class="whitespace-nowrap bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest active:scale-95 transition-all">Todos</button>
+<button class="whitespace-nowrap bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-surface-container-high transition-all active:scale-95">Doboks</button>
+<button class="whitespace-nowrap bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-surface-container-high transition-all active:scale-95">Protecciones</button>
+<button class="whitespace-nowrap bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-surface-container-high transition-all active:scale-95">Equipo</button>
+<button class="whitespace-nowrap bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-surface-container-high transition-all active:scale-95">Accesorios</button>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant text-sm font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+<span>Ordenar: Destacados</span>
+</div>
+</div>
+<!-- Product Bento-style Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+<!-- Product Card 1 (Large Focus) -->
+<article class="sm:col-span-2 lg:col-span-2 group bg-surface-container-low rounded-xl overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-xl transition-shadow duration-300">
+<div class="md:w-1/2 aspect-square overflow-hidden bg-white relative">
+<img alt="Dobok Oficial" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Professional Taekwondo practitioner in a high-quality white uniform performing a dynamic high kick, sharp focus, athletic movement" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0dCqrmAHEWa4hpBdQ9CHDBytBSqMweEutWri0tMQPwDAG3wXt0mzSToCGFZeAKwsElkugk-gB179nGzNiozoZ6H2DA_Bt9Elp8YVQHb8M-1CjAD3cuBGYBGxkdWkWO4vC0aaRjfMTRa2v3iktLARqN5snFicTNCZMehBJuS_l1JCPnY3a79IYLV3oqyqx0vkT4livgYhcuFWkOZj_tGjvt2ldNxPxczv3bY88M5g-Xp9ijyI2WId9UDzgDOT5iV4UdYADpnWDEIs"/>
+<div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Elite Series</div>
+</div>
+<div class="md:w-1/2 p-8 flex flex-col justify-between">
+<div>
+<h3 class="text-2xl font-extrabold mb-2 tracking-tight group-hover:text-primary transition-colors">Dobok Oficial ITF Master</h3>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Tejido ultraligero con tecnología de ventilación en axilas y espalda. Corte ergonómico para máxima libertad de movimiento en Tul y Combate.</p>
+<ul class="space-y-2 mb-8">
+<li class="flex items-center gap-2 text-xs font-medium text-on-surface">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span> 65% Algodón, 35% Poliéster
+                            </li>
+<li class="flex items-center gap-2 text-xs font-medium text-on-surface">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span> Bordados de alta definición
+                            </li>
+</ul>
+</div>
+<div>
+<p class="text-3xl font-black text-primary mb-4">$85.900</p>
+<button class="w-full bg-on-surface text-white py-4 rounded-md font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-sm" data-icon="shopping_bag">shopping_bag</span>
+                            Añadir al carrito
+                        </button>
+</div>
+</div>
+</article>
+<!-- Product Card 2 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group">
+<div class="aspect-square bg-white p-4 relative overflow-hidden">
+<img alt="Guantines" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" data-alt="Red protective sparring gloves for martial arts on a clean white background, high contrast lighting showing texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAeeRIDZqIPW1_x3olJgG63ili4axvts6gzhxlD9ZVl0xv5ki3SEivmfLdjsZ1wkWjavFBEL0Cvqgp8hQnWX3ArhfCMiP56r8GMoZyGs49Xub9rG05LuvP5119xEoVV3zEtAi00fWfcP5_8ebKBujraqoPWrQK0EzFxpSitqu3jLSbAx0vJxq3Aj4IC5MhXPBtipEi5fA0hOpJt_Jn67EH29aEvJyenjZPa1OEVQWW88S90rGrYaurVIxSo614ZAP1nqKbuvXKL0k"/>
+</div>
+<div class="p-6 flex flex-col flex-grow border-t border-outline-variant/10">
+<h3 class="text-lg font-bold mb-1 tracking-tight">Guantines Competición</h3>
+<p class="text-xs text-on-surface-variant mb-4 line-clamp-2">Protección de espuma inyectada de alta densidad para máxima absorción de impactos.</p>
+<div class="mt-auto">
+<p class="text-xl font-black text-primary mb-4">$32.500</p>
+<button class="w-full border border-primary text-primary py-3 rounded-md font-bold text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95">Ver Detalles</button>
+</div>
+</div>
+</article>
+<!-- Product Card 3 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group">
+<div class="aspect-square bg-white p-4 relative overflow-hidden">
+<img alt="Cabezal" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" data-alt="Professional red martial arts headgear on a neutral grey background with soft cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhGZqOnYj-TLfWdwhLJirj9LY4G63k61jx1V7zlrVMSi9SCXjtnIi-sqIAa5wei0TKBh13IX5oSG9Rk5v-Lz61eVfwLg0Q5ZPKJfpLdsVl9We33_Ig4_ReT-iN98wIuJKL_O9S03tAve4iTr3p4riYPakGzy4okVtDaRwrmvxpR4P0m-PJq86tcPBhnfPDm1w8s98h-dJ43MwptyL11N7NoxvVrNpvOdC0H7RJr0HN7bkItdGuqkPyDUVDnYVKHUQSEWKqVpOmdsI"/>
+</div>
+<div class="p-6 flex flex-col flex-grow border-t border-outline-variant/10">
+<h3 class="text-lg font-bold mb-1 tracking-tight">Protector Cabezal Pro</h3>
+<p class="text-xs text-on-surface-variant mb-4 line-clamp-2">Ajuste anatómico con cierre de velcro reforzado y protección de pómulos.</p>
+<div class="mt-auto">
+<p class="text-xl font-black text-primary mb-4">$41.200</p>
+<button class="w-full border border-primary text-primary py-3 rounded-md font-bold text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95">Ver Detalles</button>
+</div>
+</div>
+</article>
+<!-- Product Card 4 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group">
+<div class="aspect-square bg-white p-4 relative overflow-hidden">
+<img alt="Calzado" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" data-alt="Sleek black and white martial arts shoes on a light floor, minimalist athletic photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt_6pKm2ebBXj1j-RhxNDLT-75BiB0ST-JDGiT-mQEjCgt5AYLjhj1nl77nbGkZsQq0omFIb9zOIWKczuVsMJZLhNoq-wDu6WVWFmqVXe9ZxJYCXKG6XtKj5mDJnCkhy-S2ZqxW1XjrJIq3--xZ7ZP9U6Pe5ueBA9oW_yjYLq2pkr2ky2chha5d0i5vDmvnpla-tbjgmOin9phA7lINNc9_ORgzq6FVwXl4ndIGoMY3_FWKMKe20xzNdIrSMgntI6lw_EaCFGX5nw"/>
+</div>
+<div class="p-6 flex flex-col flex-grow border-t border-outline-variant/10">
+<h3 class="text-lg font-bold mb-1 tracking-tight">Zapatillas TKD Star</h3>
+<p class="text-xs text-on-surface-variant mb-4 line-clamp-2">Suela de goma antideslizante pivotante. Ideales para entrenamiento técnico.</p>
+<div class="mt-auto">
+<p class="text-xl font-black text-primary mb-4">$45.000</p>
+<button class="w-full border border-primary text-primary py-3 rounded-md font-bold text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95">Ver Detalles</button>
+</div>
+</div>
+</article>
+<!-- Product Card 5 (Horizontal Asymmetric) -->
+<article class="sm:col-span-2 lg:col-span-3 bg-inverse-surface text-white rounded-xl overflow-hidden flex flex-col md:flex-row shadow-lg">
+<div class="md:w-1/3 aspect-video md:aspect-auto overflow-hidden">
+<img alt="Bolso de Equipo" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Large black athletic equipment bag with multiple compartments on a dark industrial floor with moody spotlighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9jD2Vq9rCGm05I7HbuvxQXpvE1C46Cn4z55B3bKtiVOdClV4FJx1JI_nwF6_2AtVEzwgiIVBKASYn2baCpDqIEJABIN_BTspaj5tZcFcBEkUukLK3u5kR9abiIKy4gK9xyT2U-WG43DHelOp_8ScFSkeroj4nKU62azVS9JfLlnt_L_dP2N-Bw8hdPUcwyANPlGLIjxRGwEvl39CzAiUpLGE0XWYnsqNQQEB_7DUEz5i5vlf_cv4gTlKKrdOzlRhsiGEuS7mROzY"/>
+</div>
+<div class="md:w-2/3 p-8 flex flex-col justify-center">
+<div class="mb-6">
+<span class="text-secondary-container font-bold text-[10px] uppercase tracking-widest mb-2 block">Capacidad Pro</span>
+<h3 class="text-3xl font-black tracking-tight mb-2">Bolso de Equipo "DOJO MAX"</h3>
+<p class="text-gray-400 text-sm max-w-lg">Espacio optimizado para Dobok, protecciones completas y compartimento ventilado para calzado. Material ultra resistente Ripstop.</p>
+</div>
+<div class="flex items-center gap-6">
+<p class="text-3xl font-black text-secondary-container">$58.300</p>
+<button class="bg-primary hover:bg-primary-container px-8 py-3 rounded-md font-bold text-xs uppercase tracking-widest transition-all active:scale-95">Comprar Ahora</button>
+</div>
+</div>
+</article>
+<!-- Product Card 6 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group">
+<div class="aspect-square bg-white p-4 relative overflow-hidden">
+<img alt="Cintos" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" data-alt="A stack of folded colorful martial arts belts representing different ranks, vibrant colors, clean studio shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYAwW2xeHp0FRMcM7dq6w4vSsUFHbe3pO0yAudF_2b9cYdnM6T5Lb2c4PTkJyw_hfPb9RGzqKYHuef9pFcsU13ULkyjn4W8KL_cJzr6HiXqzE7w9DNYs5xj7OfrMsOrM9J72SgSgTtlg9EbhwuL4l35MJEXC9CwU9bXUOL2VJBPBzR8itNeJo9KodIdobKr9Z-vT7Wi6RLcUn5Su0rtvY04uXIXCv9j_fG5OIdHAcXG3K2p06PP3v0Zw6ltuZX8HJYkf3wPEywClI"/>
+</div>
+<div class="p-6 flex flex-col flex-grow border-t border-outline-variant/10">
+<h3 class="text-lg font-bold mb-1 tracking-tight">Cintos Graduación</h3>
+<p class="text-xs text-on-surface-variant mb-4 line-clamp-2">Cintos de algodón 100% con 8 líneas de costura. Colores reglamentarios ITF.</p>
+<div class="mt-auto">
+<p class="text-xl font-black text-primary mb-4">$8.900</p>
+<button class="w-full border border-primary text-primary py-3 rounded-md font-bold text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95">Ver Detalles</button>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#fcf9f8]/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-[0_-4px_20px_0_rgba(0,0,0,0.05)] rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:scale-90 duration-150 hover:text-[#ba0013] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest mt-1">Inicio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ba0013] dark:text-[#e31e24] font-bold scale-110 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_bag" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest mt-1">Tienda</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:scale-90 duration-150 hover:text-[#ba0013] transition-colors relative" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest mt-1">Carrito</span>
+<span class="absolute top-0 right-1 bg-primary text-white text-[8px] px-1 rounded-full">3</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:scale-90 duration-150 hover:text-[#ba0013] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest mt-1">Perfil</span>
+</a>
+</nav>
+<!-- FAB for quick search/support (Contextual) -->
+<button class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-primary text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+</button>
+    <script>
+        const activeUser = JSON.parse(localStorage.getItem('active_user'));
+        if (!activeUser) {
+            window.location.replace('login.html');
+        }
+        function goBack() {
+             if (activeUser.role === 'student') window.location.href = 'student.html';
+             else if (activeUser.role === 'instructor') window.location.href = 'instructor.html';
+             else if (activeUser.role === 'admin') window.location.href = 'admin.html';
+             else window.location.href = 'index.html';
+        }
+    </script>
+    <button onclick="goBack()" class="fixed bottom-24 left-6 z-50 bg-[#ba0013] text-white px-4 py-2 rounded-full shadow-lg font-bold flex items-center gap-2 hover:bg-[#e31e24] transition-colors cursor-pointer">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_back</span>
+        Volver al Panel
+    </button>
+</body></html>
